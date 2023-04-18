@@ -17,7 +17,6 @@ local open LrTable in
 val table=let val actionRows =
 "\
 \\001\000\001\000\007\000\002\000\031\000\003\000\031\000\007\000\028\000\000\000\
-\\001\000\003\000\012\000\000\000\
 \\001\000\004\000\010\000\000\000\
 \\001\000\004\000\013\000\000\000\
 \\001\000\004\000\016\000\000\000\
@@ -34,16 +33,17 @@ val table=let val actionRows =
 \\032\000\000\000\
 \\033\000\002\000\009\000\000\000\
 \\034\000\000\000\
-\\035\000\000\000\
-\\036\000\006\000\015\000\000\000\
+\\035\000\003\000\012\000\000\000\
+\\036\000\000\000\
+\\037\000\006\000\015\000\000\000\
 \"
 val actionRowNumbers =
-"\000\000\016\000\012\000\011\000\
-\\010\000\002\000\001\000\003\000\
-\\019\000\013\000\004\000\019\000\
-\\006\000\005\000\019\000\007\000\
-\\014\000\019\000\008\000\015\000\
-\\018\000\017\000\009\000"
+"\000\000\015\000\011\000\010\000\
+\\009\000\001\000\017\000\002\000\
+\\019\000\012\000\003\000\019\000\
+\\005\000\004\000\019\000\006\000\
+\\013\000\019\000\007\000\014\000\
+\\018\000\016\000\008\000"
 val gotoT =
 "\
 \\001\000\022\000\002\000\004\000\003\000\003\000\004\000\002\000\
@@ -72,7 +72,7 @@ val gotoT =
 \\000\000\
 \"
 val numstates = 23
-val numrules = 12
+val numrules = 13
 val s = ref "" and index = ref 0
 val string_to_int = fn () => 
 let val i = !index
@@ -254,7 +254,11 @@ end
 end)
  in ( LrTable.NT 6, ( result, BOOLDL1left, SEMI1right), rest671)
 end
-|  ( 10, ( ( _, ( MlyValue.rep rep1, _, rep1right)) :: ( _, ( 
+|  ( 10, ( rest671)) => let val  result = MlyValue.boolvardecls (fn _
+ => ((0,[])))
+ in ( LrTable.NT 6, ( result, defaultPos, defaultPos), rest671)
+end
+|  ( 11, ( ( _, ( MlyValue.rep rep1, _, rep1right)) :: ( _, ( 
 MlyValue.IDEN IDEN1, _, _)) :: ( _, ( _, COMMA1left, _)) :: rest671))
  => let val  result = MlyValue.rep (fn _ => let val  (IDEN as IDEN1) =
  IDEN1 ()
@@ -263,7 +267,7 @@ MlyValue.IDEN IDEN1, _, _)) :: ( _, ( _, COMMA1left, _)) :: rest671))
 end)
  in ( LrTable.NT 7, ( result, COMMA1left, rep1right), rest671)
 end
-|  ( 11, ( rest671)) => let val  result = MlyValue.rep (fn _ => ([]))
+|  ( 12, ( rest671)) => let val  result = MlyValue.rep (fn _ => ([]))
  in ( LrTable.NT 7, ( result, defaultPos, defaultPos), rest671)
 end
 | _ => raise (mlyAction i392)

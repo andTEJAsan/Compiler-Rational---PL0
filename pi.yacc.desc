@@ -1,3 +1,7 @@
+1 reduce/reduce conflict
+
+error:  state 0: reduce/reduce conflict between rule 6 and rule 3 on EOF
+error:  state 0: reduce/reduce conflict between rule 6 and rule 3 on EOF
 
 state 0:
 
@@ -73,7 +77,7 @@ state 6:
 
 	boolvardecls	goto 9
 
-	.	error
+	.	reduce by rule 10
 
 
 state 7:
@@ -94,7 +98,7 @@ state 8:
 
 	rep	goto 12
 
-	.	reduce by rule 11
+	.	reduce by rule 12
 
 
 state 9:
@@ -124,7 +128,7 @@ state 11:
 
 	rep	goto 15
 
-	.	reduce by rule 11
+	.	reduce by rule 12
 
 
 state 12:
@@ -155,7 +159,7 @@ state 14:
 
 	rep	goto 18
 
-	.	reduce by rule 11
+	.	reduce by rule 12
 
 
 state 15:
@@ -185,7 +189,7 @@ state 17:
 
 	rep	goto 20
 
-	.	reduce by rule 11
+	.	reduce by rule 12
 
 
 state 18:
@@ -209,11 +213,11 @@ state 19:
 
 state 20:
 
-	rep : COMMA IDEN rep .  (reduce by rule 10)
+	rep : COMMA IDEN rep .  (reduce by rule 11)
 
 
 
-	.	reduce by rule 10
+	.	reduce by rule 11
 
 
 state 21:
