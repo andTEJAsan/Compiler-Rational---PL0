@@ -1,0 +1,18 @@
+(* pi.cm Build project *)
+Library
+    structure Pi
+is
+    datatypes.sml
+(* Lot of datatypes *)
+    pi.lex
+(* Lexer rules. *)
+    pi.yacc:MLYacc
+(* Parser rules. *)
+    glue.sml
+(* Build the parser *)
+    compiler.sml
+(* Lex, parse, panic... *)
+    $/basis.cm
+(* SML/NJ’s Basis Library. *)
+    $/ml-yacc-lib.cm (* Code written by Lucent. *)
+    $smlnj/compiler/compiler.cm (* Structure Compiler. *)

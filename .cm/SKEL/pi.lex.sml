@@ -1,0 +1,2 @@
+Skeleton 5
+ae"PiLexFun"i2aä¢Tokens"gp1c"Pi_TOKENS"f4ä¢Int"d"Char"ä¢TextIO"ä¢Vector"h3aä¢yyInput"jh3aä¢TIO"gp1ÿ6ad"TSIO"gp2ÿd"StreamIO"ad"TPIO"gp1d"TextPrimIO"h0aä¢UserDeclarations"h1aä¢T"gp1ÿbbd2egp1ÿ‚f7ÿ‚.d"IO"Cÿ)d"List"ÿ‚ÿ?ÿNf0f1ÿ
