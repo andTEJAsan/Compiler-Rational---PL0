@@ -2,6 +2,7 @@
 Library
     structure Pi
 is
+    core.sml
     datatypes.sml
 (* Lot of datatypes *)
     pi.lex

@@ -1,0 +1,27 @@
+Design Decisions:-
+1. To Prevent Shift Reduce Conflist, the grammar of expressions was modified
+2. The modified grammar of expressions
+E ::= ~ E
+    | inverse E
+    | E .+. E
+    | E .-. E
+    | E .*. E
+    | E ./. E
+    | E + E
+    | E - E
+    | E * E
+    | E / E
+    | E % E
+    | ! E
+    | E && E
+    | E || E
+    | E = E
+    | E <> E
+    | E < E
+    | E <= E
+    | E > E
+    | E >= E
+    | intval
+    | ratval
+    | boolval
+3. We will do type checking during evaluation of AST

@@ -1,2 +1,3 @@
 Skeleton 5
-ae"PiLrValsFun"i2aдўToken"gp1c"TOKEN"f±яjh2aдўParserData"h7aдўHeader"h1egp1d"DataTypes"aдўLrTable"gp2яяЃCaяgpя&bезр±яЃf6d"Char"Cd"List"d"String"d"General"яЃd"Array"Nbезр±я=aдўMlyValue"и0ad"EC"h2яЃ4bя‚,ж±я‚3ad"Actions"h2bя‚,f2яЃя‚3яѓNaдўTokens"jя‚>зр±гўPi_TOKENS"h2aя-gp1c"PARSER_DATA"aяѓ2яѓ?
+ae"PiLrValsFun"i2aдўToken"gp1c"TOKEN"f±яjh2aдўParserData"h7aдўHeader"h1egp1d"DataTypes"aдўLrTable"gp2яяЃCaяgpя&bезр±яЃf6d"Char"Cd"List"d"String"d"General"яЃd"Array"Nbезр±я=d2f2d"Rational"d"BigInt"aдўMlyValue"и0ad"EC"h2яЃ4bя‚,ж±яѓad"Actions"h2bя‚,f2яЃяѓяѓ'NaдўTokens"jяѓзр±гўPi_TOKENS"h2aя-gp1c"PARSER_DATA"aя„
+я„
