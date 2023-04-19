@@ -46,11 +46,13 @@ open DataTypes
          | TREAD
          | TCALL
 %nonterm program of blockans | block of blockans
-         | declseq of (int_rat_bool_decls list)*(int_rat_bool_decls list)*(int_rat_bool_decls list) 
-         | vardecls of (int_rat_bool_decls list)*(int_rat_bool_decls list)*(int_rat_bool_decls list) 
-         | ratvardecls of (int_rat_bool_decls list)
-         | intvardecls of  (int_rat_bool_decls list)
-         | boolvardecls of (int_rat_bool_decls list)
+         | declseq of ((decls list)*(decls list)*(decls list))*(decls list)
+         | vardecls of (decls list)*(decls list)*(decls list) 
+         | procdecls of (decls list)
+         | procdef of (decls)
+         | ratvardecls of (decls list)
+         | intvardecls of  (decls list)
+         | boolvardecls of (decls list)
          | rep of string list
          | expression of Expression
          | assignmentcmd of Cmd
@@ -97,8 +99,11 @@ open DataTypes
 %%
 program: block (block)
 block: declseq commandseq (blockans(declseq,commandseq))
-declseq: vardecls (vardecls)
-        |   (([],[],[]))
+declseq: vardecls procdecls (vardecls,procdecls)
+        |   (([],[],[]),[])
+procdecls: procdef TSEMI procdecls  (procdef::procdecls)
+|       ([])
+procdef: TPROCEDURE TIDEN block (PROC_(TIDEN,block))
 vardecls: ratvardecls intvardecls boolvardecls ((ratvardecls,intvardecls,boolvardecls))
 ratvardecls: TRATIONAL TIDEN rep TSEMI (map RAT_ (TIDEN::rep))
             | ([])

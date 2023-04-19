@@ -2,10 +2,9 @@ structure DataTypes =
 struct
 type id = string
 datatype prog = Prog;
-datatype int_rat_bool_decls = INT_ of id | RAT_ of id | BOOL_ of id 
-type x = int_rat_bool_decls list
-type y = x*x*x
-datatype Expression = negative of Expression
+datatype decls = INT_ of id | RAT_ of id | BOOL_ of id | PROC_ of (id*blockans)
+
+and  Expression = negative of Expression
                       | inverse of Expression
                       | reference of id
                       | not of Expression
@@ -29,11 +28,10 @@ datatype Expression = negative of Expression
                       | inte of BigInt.bigint
                       | rate of Rational.rational
                       | boole of bool
-datatype Cmd = AssignmentCmd of (id*Expression) | PrintCmd of Expression | ConditionalCmd of Expression*(Cmd list)*(Cmd list)
+and Cmd = AssignmentCmd of (id*Expression) | PrintCmd of Expression | ConditionalCmd of Expression*(Cmd list)*(Cmd list)
               | WhileCmd of (Expression*(Cmd list))  
             | CallCmd of id
             | ReadCmd of id
-datatype blockans = blockans of y*(Cmd list)
- 
+and blockans = blockans of (((decls list)*(decls list)*(decls list))*(decls list))*(Cmd list)
 
 end;
