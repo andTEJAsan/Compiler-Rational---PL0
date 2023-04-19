@@ -1,47 +1,47 @@
 open DataTypes
 %%
 %name Pi
-%term RATDL | INTDL | BOOLDL
-         | IDEN of string
-         | SEMI
-         | LBRACE
-         | RBRACE
-         | LPAREN
-         | RPAREN
-         | COMMA
-         | EOF
-         | ASSIGN
-         | NEG
-         | INV
-         | RATPLUS
-         | RATSUB
-         | RATMUL
-         | RATDIV
-         | PLUS
-         | SUB
-         | MUL
-         | DIV
-         | MOD
-         | NOT
-         | AND
-         | OR
-         | EQ
-         | NE
-         | LT
-         | LE
-         | GT
-         | GE
-         | RATNUM of Rational.rational
-         | BOOLNUM of bool
-         | INTNUM of BigInt.bigint
-         | PRINT
-         | IF 
-         | THEN
-         | ELSE
-         | FI
-         | WHILE
-         | OD
-         | DO
+%term TRATIONAL | TINTEGER | TBOOLEAN
+         | TIDEN of string
+         | TSEMI
+         | TLBRACE
+         | TRBRACE
+         | TLPAREN
+         | TRPAREN
+         | TCOMMA
+         | TEOF
+         | TASSIGN
+         | TNEG
+         | TINV
+         | TRATADD
+         | TRATSUB
+         | TRATMUL
+         | TRATDIV
+         | TADD
+         | TSUB
+         | TMUL
+         | TDIV
+         | TMOD
+         | TNOT
+         | TAND
+         | TOR
+         | TEQ
+         | TNE
+         | TLT
+         | TLE
+         | TGT
+         | TGE
+         | TRATNUM of Rational.rational
+         | TBOOLNUM of bool
+         | TINTNUM of BigInt.bigint
+         | TPRINT
+         | TIF 
+         | TTHEN
+         | TELSE
+         | TFI
+         | TWHILE
+         | TOD
+         | TDO
 %nonterm program of blockans | block of blockans
          | declseq of (int_rat_bool_decls list)*(int_rat_bool_decls list)*(int_rat_bool_decls list) 
          | vardecls of (int_rat_bool_decls list)*(int_rat_bool_decls list)*(int_rat_bool_decls list) 
@@ -61,27 +61,28 @@ open DataTypes
 
 
 %pos int
-%eop EOF
-%noshift EOF
-%nonassoc RATDL EOF BOOLDL INTDL SEMI COMMA
+%eop TEOF
+%noshift TEOF
+%nonassoc TRATIONAL TEOF TBOOLEAN TINTEGER TSEMI TCOMMA
 %verbose
-%keyword RATDL BOOLDL INTDL WHILE DO OD IF FI THEN ELSE PRINT
+%keyword TRATIONAL TBOOLEAN TINTEGER TWHILE TDO TOD TIF TFI TTHEN TELSE TPRINT
 
  
 
 
 
 
-%left SUB PLUS
-%left MUL DIV MOD
+%left TSUB TADD
+%left TMUL TDIV TMOD
 
-%left RATSUB RATPLUS
-%left RATMUL RATDIV 
+%left TRATSUB TRATADD
+%left TRATMUL TRATDIV 
 
-%left OR AND 
-%left EQ NE  LT  LE  GT  GE
-%right NOT INV
-%right NEG
+%left TOR 
+%left TAND
+%left TEQ TNE  TLT  TLE  TGT  TGE
+%right TNOT TINV
+%right TNEG
 
 
 
@@ -94,49 +95,51 @@ block: declseq commandseq (blockans(declseq,commandseq))
 declseq: vardecls (vardecls)
         |   (([],[],[]))
 vardecls: ratvardecls intvardecls boolvardecls ((ratvardecls,intvardecls,boolvardecls))
-ratvardecls: RATDL IDEN rep SEMI (map RATa (IDEN::rep))
+ratvardecls: TRATIONAL TIDEN rep TSEMI (map RAT_ (TIDEN::rep))
             | ([])
-intvardecls: INTDL IDEN rep SEMI (map INTa (IDEN::rep))
+intvardecls: TINTEGER TIDEN rep TSEMI (map INT_ (TIDEN::rep))
             | ([])
-boolvardecls: BOOLDL IDEN rep SEMI (map BOOLa (IDEN::rep))
+boolvardecls: TBOOLEAN TIDEN rep TSEMI (map BOOL_ (TIDEN::rep))
                 | ([])
-rep: COMMA IDEN rep (IDEN::rep)
+rep: TCOMMA TIDEN rep (TIDEN::rep)
     | ([])
-commandseq:     LBRACE RBRACE ([])
-        |       LBRACE command SEMI res RBRACE (command::res)
-res: command SEMI res (command::res)
+commandseq:     TLBRACE TRBRACE ([])
+        |       TLBRACE command TSEMI res TRBRACE (command::res)
+res: command TSEMI res (command::res)
         | ([])
 command: assignmentcmd (assignmentcmd)
 |       printcmd (printcmd)
 |       conditionalcmd (conditionalcmd)
 |       whilecmd (whilecmd)
-whilecmd: WHILE expression DO commandseq OD (WhileCmd(expression,commandseq))
-conditionalcmd: IF expression THEN commandseq ELSE commandseq FI (ConditionalCmd(expression,commandseq1,commandseq2)) 
-printcmd: PRINT LPAREN expression RPAREN (PrintCmd(expression))
-assignmentcmd: IDEN ASSIGN expression (AssignmentCmd(IDEN,expression))
-expression: NEG expression (negative(expression))
-|           INV expression (inverse(expression))
-|           expression RATPLUS expression (ratadd(expression1,expression2))
-|           expression RATSUB expression (ratsub(expression1,expression2))
-|           expression RATMUL expression (ratmul(expression1,expression2))
-|           expression RATDIV expression (ratdiv(expression1,expression2))
-|           expression PLUS expression (intadd(expression1,expression2))
-|           expression SUB expression (intsub(expression1,expression2))
-|           expression MUL expression (intmul(expression1,expression2))
-|           expression DIV expression (intdiv(expression1,expression2))
-|           expression MOD expression (intmod(expression1,expression2))
-|           expression AND expression (booland(expression1,expression2))
-|           expression OR expression (boolor(expression1,expression2))
-|           expression EQ expression (equal(expression1,expression2))
-|           expression NE expression (notequal(expression1,expression2))
-|           expression LT expression (less(expression1,expression2))
-|           expression LE expression (lesseq(expression1,expression2))
-|           expression GT expression (more(expression1,expression2))
-|           expression GE expression (moreeq(expression1,expression2))
-|           LPAREN expression RPAREN (expression)
-|           RATNUM (rate(RATNUM))
-|           BOOLNUM (boole(BOOLNUM))
-|           INTNUM (inte(INTNUM))
+whilecmd: TWHILE expression TDO commandseq TOD (WhileCmd(expression,commandseq))
+conditionalcmd: TIF expression TTHEN commandseq TELSE commandseq TFI (ConditionalCmd(expression,commandseq1,commandseq2)) 
+printcmd: TPRINT TLPAREN expression TRPAREN (PrintCmd(expression))
+assignmentcmd: TIDEN TASSIGN expression (AssignmentCmd(TIDEN,expression))
+expression: TNEG expression (negative(expression))
+|           TINV expression (inverse(expression))
+|           TNOT expression (negative(expression))
+|           TIDEN (reference(TIDEN))
+|           expression TRATADD expression (ratadd(expression1,expression2))
+|           expression TRATSUB expression (ratsub(expression1,expression2))
+|           expression TRATMUL expression (ratmul(expression1,expression2))
+|           expression TRATDIV expression (ratdiv(expression1,expression2))
+|           expression TADD expression (intadd(expression1,expression2))
+|           expression TSUB expression (intsub(expression1,expression2))
+|           expression TMUL expression (intmul(expression1,expression2))
+|           expression TDIV expression (intdiv(expression1,expression2))
+|           expression TMOD expression (intmod(expression1,expression2))
+|           expression TAND expression (booland(expression1,expression2))
+|           expression TOR expression (boolor(expression1,expression2))
+|           expression TEQ expression (equal(expression1,expression2))
+|           expression TNE expression (notequal(expression1,expression2))
+|           expression TLT expression (less(expression1,expression2))
+|           expression TLE expression (lesseq(expression1,expression2))
+|           expression TGT expression (more(expression1,expression2))
+|           expression TGE expression (moreeq(expression1,expression2))
+|           TLPAREN expression TRPAREN (expression)
+|           TRATNUM (rate(TRATNUM))
+|           TBOOLNUM (boole(TBOOLNUM))
+|           TINTNUM (inte(TINTNUM))
 
 
 

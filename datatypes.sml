@@ -2,11 +2,12 @@ structure DataTypes =
 struct
 type id = string
 datatype prog = Prog;
-datatype int_rat_bool_decls = INTa of id | RATa of id | BOOLa of id 
+datatype int_rat_bool_decls = INT_ of id | RAT_ of id | BOOL_ of id 
 type x = int_rat_bool_decls list
 type y = x*x*x
 datatype Expression = negative of Expression
                       | inverse of Expression
+                      | reference of id
                       | not of Expression
                       | ratadd of Expression*Expression
                       | ratsub of Expression*Expression

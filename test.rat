@@ -1,2 +1,2 @@
 rational x,y,z,hello;boolean hi;
-{if  2 > 3 then {print(45);} else {} fi;while tt = ff do {print(2+3*4-6-7/4+2);};}
+{print(tt || ff );}

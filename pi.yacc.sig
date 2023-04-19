@@ -2,49 +2,49 @@ signature Pi_TOKENS =
 sig
 type ('a,'b) token
 type svalue
-val DO:  'a * 'a -> (svalue,'a) token
-val OD:  'a * 'a -> (svalue,'a) token
-val WHILE:  'a * 'a -> (svalue,'a) token
-val FI:  'a * 'a -> (svalue,'a) token
-val ELSE:  'a * 'a -> (svalue,'a) token
-val THEN:  'a * 'a -> (svalue,'a) token
-val IF:  'a * 'a -> (svalue,'a) token
-val PRINT:  'a * 'a -> (svalue,'a) token
-val INTNUM: (BigInt.bigint) *  'a * 'a -> (svalue,'a) token
-val BOOLNUM: (bool) *  'a * 'a -> (svalue,'a) token
-val RATNUM: (Rational.rational) *  'a * 'a -> (svalue,'a) token
-val GE:  'a * 'a -> (svalue,'a) token
-val GT:  'a * 'a -> (svalue,'a) token
-val LE:  'a * 'a -> (svalue,'a) token
-val LT:  'a * 'a -> (svalue,'a) token
-val NE:  'a * 'a -> (svalue,'a) token
-val EQ:  'a * 'a -> (svalue,'a) token
-val OR:  'a * 'a -> (svalue,'a) token
-val AND:  'a * 'a -> (svalue,'a) token
-val NOT:  'a * 'a -> (svalue,'a) token
-val MOD:  'a * 'a -> (svalue,'a) token
-val DIV:  'a * 'a -> (svalue,'a) token
-val MUL:  'a * 'a -> (svalue,'a) token
-val SUB:  'a * 'a -> (svalue,'a) token
-val PLUS:  'a * 'a -> (svalue,'a) token
-val RATDIV:  'a * 'a -> (svalue,'a) token
-val RATMUL:  'a * 'a -> (svalue,'a) token
-val RATSUB:  'a * 'a -> (svalue,'a) token
-val RATPLUS:  'a * 'a -> (svalue,'a) token
-val INV:  'a * 'a -> (svalue,'a) token
-val NEG:  'a * 'a -> (svalue,'a) token
-val ASSIGN:  'a * 'a -> (svalue,'a) token
-val EOF:  'a * 'a -> (svalue,'a) token
-val COMMA:  'a * 'a -> (svalue,'a) token
-val RPAREN:  'a * 'a -> (svalue,'a) token
-val LPAREN:  'a * 'a -> (svalue,'a) token
-val RBRACE:  'a * 'a -> (svalue,'a) token
-val LBRACE:  'a * 'a -> (svalue,'a) token
-val SEMI:  'a * 'a -> (svalue,'a) token
-val IDEN: (string) *  'a * 'a -> (svalue,'a) token
-val BOOLDL:  'a * 'a -> (svalue,'a) token
-val INTDL:  'a * 'a -> (svalue,'a) token
-val RATDL:  'a * 'a -> (svalue,'a) token
+val TDO:  'a * 'a -> (svalue,'a) token
+val TOD:  'a * 'a -> (svalue,'a) token
+val TWHILE:  'a * 'a -> (svalue,'a) token
+val TFI:  'a * 'a -> (svalue,'a) token
+val TELSE:  'a * 'a -> (svalue,'a) token
+val TTHEN:  'a * 'a -> (svalue,'a) token
+val TIF:  'a * 'a -> (svalue,'a) token
+val TPRINT:  'a * 'a -> (svalue,'a) token
+val TINTNUM: (BigInt.bigint) *  'a * 'a -> (svalue,'a) token
+val TBOOLNUM: (bool) *  'a * 'a -> (svalue,'a) token
+val TRATNUM: (Rational.rational) *  'a * 'a -> (svalue,'a) token
+val TGE:  'a * 'a -> (svalue,'a) token
+val TGT:  'a * 'a -> (svalue,'a) token
+val TLE:  'a * 'a -> (svalue,'a) token
+val TLT:  'a * 'a -> (svalue,'a) token
+val TNE:  'a * 'a -> (svalue,'a) token
+val TEQ:  'a * 'a -> (svalue,'a) token
+val TOR:  'a * 'a -> (svalue,'a) token
+val TAND:  'a * 'a -> (svalue,'a) token
+val TNOT:  'a * 'a -> (svalue,'a) token
+val TMOD:  'a * 'a -> (svalue,'a) token
+val TDIV:  'a * 'a -> (svalue,'a) token
+val TMUL:  'a * 'a -> (svalue,'a) token
+val TSUB:  'a * 'a -> (svalue,'a) token
+val TADD:  'a * 'a -> (svalue,'a) token
+val TRATDIV:  'a * 'a -> (svalue,'a) token
+val TRATMUL:  'a * 'a -> (svalue,'a) token
+val TRATSUB:  'a * 'a -> (svalue,'a) token
+val TRATADD:  'a * 'a -> (svalue,'a) token
+val TINV:  'a * 'a -> (svalue,'a) token
+val TNEG:  'a * 'a -> (svalue,'a) token
+val TASSIGN:  'a * 'a -> (svalue,'a) token
+val TEOF:  'a * 'a -> (svalue,'a) token
+val TCOMMA:  'a * 'a -> (svalue,'a) token
+val TRPAREN:  'a * 'a -> (svalue,'a) token
+val TLPAREN:  'a * 'a -> (svalue,'a) token
+val TRBRACE:  'a * 'a -> (svalue,'a) token
+val TLBRACE:  'a * 'a -> (svalue,'a) token
+val TSEMI:  'a * 'a -> (svalue,'a) token
+val TIDEN: (string) *  'a * 'a -> (svalue,'a) token
+val TBOOLEAN:  'a * 'a -> (svalue,'a) token
+val TINTEGER:  'a * 'a -> (svalue,'a) token
+val TRATIONAL:  'a * 'a -> (svalue,'a) token
 end
 signature Pi_LRVALS=
 sig

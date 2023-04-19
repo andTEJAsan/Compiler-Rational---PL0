@@ -3,6 +3,7 @@ signature PI =
 sig
     exception PiError;
     val compile : string -> DataTypes.blockans;
+    
 end
 
 structure Pi : PI =
@@ -31,5 +32,5 @@ struct
     in 
         tree
     end
-
+    
 end;
