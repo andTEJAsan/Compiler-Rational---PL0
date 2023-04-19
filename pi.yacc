@@ -45,6 +45,7 @@ open DataTypes
          | TPROCEDURE
          | TREAD
          | TCALL
+
 %nonterm program of blockans | block of blockans
          | declseq of ((decls list)*(decls list)*(decls list))*(decls list)
          | vardecls of (decls list)*(decls list)*(decls list) 
