@@ -42,6 +42,9 @@ open DataTypes
          | TWHILE
          | TOD
          | TDO
+         | TPROCEDURE
+         | TREAD
+         | TCALL
 %nonterm program of blockans | block of blockans
          | declseq of (int_rat_bool_decls list)*(int_rat_bool_decls list)*(int_rat_bool_decls list) 
          | vardecls of (int_rat_bool_decls list)*(int_rat_bool_decls list)*(int_rat_bool_decls list) 
@@ -52,6 +55,8 @@ open DataTypes
          | expression of Expression
          | assignmentcmd of Cmd
          | printcmd of Cmd
+         | readcmd of Cmd
+         | callcmd of Cmd
          | whilecmd of Cmd
          | conditionalcmd of Cmd
          | command of Cmd
@@ -65,7 +70,7 @@ open DataTypes
 %noshift TEOF
 %nonassoc TRATIONAL TEOF TBOOLEAN TINTEGER TSEMI TCOMMA
 %verbose
-%keyword TRATIONAL TBOOLEAN TINTEGER TWHILE TDO TOD TIF TFI TTHEN TELSE TPRINT
+%keyword TRATIONAL TBOOLEAN TINTEGER TWHILE TDO TOD TIF TFI TTHEN TELSE TPRINT TPROCEDURE TREAD TCALL
 
  
 
@@ -111,13 +116,17 @@ command: assignmentcmd (assignmentcmd)
 |       printcmd (printcmd)
 |       conditionalcmd (conditionalcmd)
 |       whilecmd (whilecmd)
+|       callcmd (callcmd)
+|       readcmd (readcmd)
+readcmd: TREAD TLPAREN TIDEN TRPAREN (ReadCmd(TIDEN))
+callcmd: TCALL TIDEN (CallCmd(TIDEN))
 whilecmd: TWHILE expression TDO commandseq TOD (WhileCmd(expression,commandseq))
 conditionalcmd: TIF expression TTHEN commandseq TELSE commandseq TFI (ConditionalCmd(expression,commandseq1,commandseq2)) 
 printcmd: TPRINT TLPAREN expression TRPAREN (PrintCmd(expression))
 assignmentcmd: TIDEN TASSIGN expression (AssignmentCmd(TIDEN,expression))
 expression: TNEG expression (negative(expression))
 |           TINV expression (inverse(expression))
-|           TNOT expression (negative(expression))
+|           TNOT expression (not(expression))
 |           TIDEN (reference(TIDEN))
 |           expression TRATADD expression (ratadd(expression1,expression2))
 |           expression TRATSUB expression (ratsub(expression1,expression2))

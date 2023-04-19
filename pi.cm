@@ -3,7 +3,6 @@ Library
     structure Pi
 is
 
-    interpret.sml
     core.sml
     datatypes.sml
 (* Lot of datatypes *)

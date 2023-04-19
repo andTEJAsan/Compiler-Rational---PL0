@@ -45,6 +45,9 @@ id= [A-Za-z]{idchars}*;
 "od" => (col:=yypos-(!eolpos);T.TOD(!lin,!col));
 "and" => (col:=yypos-(!eolpos);T.TAND(!lin,!col));
 "or" => (col:=yypos-(!eolpos);T.TOR(!lin,!col));
+"procedure" => (col:=yypos-(!eolpos);T.TPROCEDURE(!lin,!col));
+"read" => (col:=yypos-(!eolpos);T.TREAD(!lin,!col));
+"call" => (col:=yypos-(!eolpos);T.TCALL(!lin,!col));
 
 "rational" => (col:=yypos-(!eolpos);T.TRATIONAL(!lin,!col));
 "integer" => (col:=yypos-(!eolpos);T.TINTEGER(!lin,!col));

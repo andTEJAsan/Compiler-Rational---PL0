@@ -1,2 +1,2 @@
 rational x,y,z,hello;boolean hi;
-{print(tt || ff );}
+{read(me);call fact;print(!(tt || ff) && ff );print(ff || tt);}

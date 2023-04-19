@@ -31,7 +31,8 @@ datatype Expression = negative of Expression
                       | boole of bool
 datatype Cmd = AssignmentCmd of (id*Expression) | PrintCmd of Expression | ConditionalCmd of Expression*(Cmd list)*(Cmd list)
               | WhileCmd of (Expression*(Cmd list))  
-
+            | CallCmd of id
+            | ReadCmd of id
 datatype blockans = blockans of y*(Cmd list)
  
 
