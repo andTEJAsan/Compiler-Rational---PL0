@@ -1,6 +1,17 @@
 open DataTypes
 fun get_blockreffromproc(PROC_(_,a : (blockans ref))) = a
 |   get_blockreffromproc(_) = ref Empty
+fun getlast(DataTypes.blockans(a,b,c,d))= d
+|   getlast(DataTypes.Empty) = ref DataTypes.Empty
+fun grand (n1:DataTypes.blockans )(x) = getlast(!x):= n1;
+ fun dfs(bl as DataTypes.blockans(a,b,c,d) : DataTypes.blockans):unit =  (((map (grand(bl))) c) ;  let
+  fun repeater([]) = ()
+  |   repeater(x::tl) = ((dfs(!x);repeater(tl));())
+in
+        repeater(c)
+end) 
+
+
 %%
 %name Pi
 %term TRATIONAL | TINTEGER | TBOOLEAN
@@ -100,7 +111,7 @@ fun get_blockreffromproc(PROC_(_,a : (blockans ref))) = a
 %arg (fileName) : string
 %start program
 %%
-program: block (block)
+program: block (dfs(block);block)
 block: declseq commandseq (blockans(declseq,commandseq,(map get_blockreffromproc (#2 declseq)),ref Empty))
 declseq: vardecls procdecls (vardecls,procdecls)
         |   (([],[],[]),[])

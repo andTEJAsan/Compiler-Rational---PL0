@@ -1,5 +1,7 @@
 (* compiler.sml *)
 signature PI =
+
+
 sig
     exception PiError;
     val compile : string -> DataTypes.blockans;
@@ -48,3 +50,14 @@ fun interpret(filename) = walk(compile filename)
 *)
    
 end;
+(*fun set_ref (n1: DataTypes.blockans,ref DataTypes.blockans(a,b,c,d)) = d :=n1;()*)
+(*fun getlast(DataTypes.blockans(a,b,c,d))= d
+|   getlast(DataTypes.Empty) = ref DataTypes.Empty
+fun grand (n1:DataTypes.blockans )(x) = getlast(!x):= n1;
+ fun dfs(bl as DataTypes.blockans(a,b,c,d) : DataTypes.blockans):unit =  (((map (grand(bl))) c) ;  let
+  fun repeater([]) = ()
+  |   repeater(x::tl) = ((dfs(!x);repeater(tl));())
+in
+        repeater(c)
+end) 
+*)
