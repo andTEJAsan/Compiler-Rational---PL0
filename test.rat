@@ -1,3 +1,6 @@
-procedure hi {
-    x:=x+1;
-};{}
+integer x;procedure foo integer z;{print(y);}; 
+{
+    x:=7;
+    call foo; 
+    print(x);
+}
