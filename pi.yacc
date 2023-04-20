@@ -1,4 +1,6 @@
 open DataTypes
+fun get_blockreffromproc(PROC_(_,a : (blockans ref))) = a
+|   get_blockreffromproc(_) = ref Empty
 %%
 %name Pi
 %term TRATIONAL | TINTEGER | TBOOLEAN
@@ -99,12 +101,12 @@ open DataTypes
 %start program
 %%
 program: block (block)
-block: declseq commandseq (blockans(declseq,commandseq))
+block: declseq commandseq (blockans(declseq,commandseq,(map get_blockreffromproc (#2 declseq)),ref Empty))
 declseq: vardecls procdecls (vardecls,procdecls)
         |   (([],[],[]),[])
 procdecls: procdef TSEMI procdecls  (procdef::procdecls)
 |       ([])
-procdef: TPROCEDURE TIDEN block (PROC_(TIDEN,block))
+procdef: TPROCEDURE TIDEN block (PROC_(TIDEN,ref block))
 vardecls: ratvardecls intvardecls boolvardecls ((ratvardecls,intvardecls,boolvardecls))
 ratvardecls: TRATIONAL TIDEN rep TSEMI (map RAT_ (TIDEN::rep))
             | ([])

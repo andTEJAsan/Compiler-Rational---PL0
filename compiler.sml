@@ -3,8 +3,8 @@ signature PI =
 sig
     exception PiError;
     val compile : string -> DataTypes.blockans;
-   val walk : DataTypes.blockans -> unit
-  val interpret : string -> unit
+  (*) val walk : DataTypes.blockans -> unit
+  val interpret : string -> unit*)
 end
 
 structure Pi : PI =
@@ -33,7 +33,7 @@ struct
     in 
         tree
     end
- fun walk(DataTypes.blockans(_  ,[])) = print("Interpretation Done\n")
+ (*fun walk(DataTypes.blockans(_  ,[])) = print("Interpretation Done\n")
 | walk(DataTypes.blockans(z,x::a)) =
     case x of
        DataTypes.PrintCmd(y) => (print( eval_expr(y) ^ "\n"); walk(DataTypes.blockans(z,a)))
@@ -45,6 +45,6 @@ struct
         | eval_expr(DataTypes.not (e)) = let val first = valOf(Bool.fromString(eval_expr(e)))in Bool.toString(not first) end
         | eval_expr(_) = "not implemented yet"
 fun interpret(filename) = walk(compile filename)
-
+*)
    
 end;

@@ -2,7 +2,7 @@ structure DataTypes =
 struct
 type id = string
 datatype prog = Prog;
-datatype decls = INT_ of id | RAT_ of id | BOOL_ of id | PROC_ of (id*blockans)
+datatype decls = INT_ of id | RAT_ of id | BOOL_ of id | PROC_ of (id*(blockans ref))
 
 and  Expression = negative of Expression
                       | inverse of Expression
@@ -32,6 +32,6 @@ and Cmd = AssignmentCmd of (id*Expression) | PrintCmd of Expression | Conditiona
               | WhileCmd of (Expression*(Cmd list))  
             | CallCmd of id
             | ReadCmd of id
-and blockans = blockans of (((decls list)*(decls list)*(decls list))*(decls list))*(Cmd list)
+and blockans = blockans of (((decls list)*(decls list)*(decls list))*(decls list))*(Cmd list)*((blockans ref) list)*(blockans ref) | Empty
 
 end;

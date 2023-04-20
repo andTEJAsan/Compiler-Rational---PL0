@@ -9,6 +9,8 @@ struct
 structure Header = 
 struct
 open DataTypes
+fun get_blockreffromproc(PROC_(_,a : (blockans ref))) = a
+|   get_blockreffromproc(_) = ref Empty
 
 end
 structure LrTable = Token.LrTable
@@ -479,7 +481,9 @@ end
  => let val  result = MlyValue.block (fn _ => let val  (declseq as 
 declseq1) = declseq1 ()
  val  (commandseq as commandseq1) = commandseq1 ()
- in (blockans(declseq,commandseq))
+ in (
+blockans(declseq,commandseq,(map get_blockreffromproc (#2 declseq)),ref Empty)
+)
 end)
  in ( LrTable.NT 1, ( result, declseq1left, commandseq1right), rest671
 )
@@ -517,7 +521,7 @@ MlyValue.TIDEN TIDEN1, _, _)) :: ( _, ( _, TPROCEDURE1left, _)) ::
 rest671)) => let val  result = MlyValue.procdef (fn _ => let val  (
 TIDEN as TIDEN1) = TIDEN1 ()
  val  (block as block1) = block1 ()
- in (PROC_(TIDEN,block))
+ in (PROC_(TIDEN,ref block))
 end)
  in ( LrTable.NT 5, ( result, TPROCEDURE1left, block1right), rest671)
 

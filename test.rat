@@ -1,2 +1,4 @@
-rational x,y,z,hello;boolean hi;procedure factorial {print(x*(x-1));} 
-{read(me);call fact;print(!(tt || ff) && ff );print(ff || tt);}
+rational x;procedure hi {print(2);};{
+    print(2+3*5);
+    call hi;
+}
