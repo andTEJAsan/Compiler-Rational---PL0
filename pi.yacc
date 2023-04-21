@@ -1,16 +1,21 @@
 open DataTypes
+fun ma f [] = []
+|   ma f (x::xs) = (f x) :: (ma f xs)
 fun get_blockreffromproc(PROC_(_,a : (blockans ref))) = a
 |   get_blockreffromproc(_) = ref Empty
 fun getlast(DataTypes.blockans(a,b,c,d))= d
 |   getlast(DataTypes.Empty) = ref DataTypes.Empty
 fun grand (n1:DataTypes.blockans )(x) = getlast(!x):= n1;
- fun dfs(bl as DataTypes.blockans(a,b,c,d) : DataTypes.blockans):unit =  (((map (grand(bl))) c) ;  let
+ fun dfs(bl as DataTypes.blockans(a,b,c,d) : DataTypes.blockans):unit =  (((ma (grand(bl))) c) ;  let
   fun repeater([]) = ()
   |   repeater(x::tl) = ((dfs(!x);repeater(tl));())
 in
         repeater(c)
 end) 
-
+fun get_empty() = ref(let val ht : (string, decls) HashTable.hash_table = HashTable.mkTable(HashString.hashString, op=)(17, Domain)
+in ht end)
+fun get_id_from_proc(PROC_(x,y)) = x
+|   get_id_from_proc(_)  = "bogus"
 
 %%
 %name Pi
@@ -60,9 +65,9 @@ end)
          | TCALL
 
 %nonterm program of blockans | block of blockans
-         | declseq of ((decls list)*(decls list)*(decls list))*(decls list)
+         | declseq of ((decls list)*(decls list)*(decls list))*( decls_table ref)
          | vardecls of (decls list)*(decls list)*(decls list) 
-         | procdecls of (decls list)
+         | procdecls of ( decls_table ref)
          | procdef of (decls)
          | ratvardecls of (decls list)
          | intvardecls of  (decls list)
@@ -112,18 +117,18 @@ end)
 %start program
 %%
 program: block (dfs(block);block)
-block: declseq commandseq (blockans(declseq,commandseq,(map get_blockreffromproc (#2 declseq)),ref Empty))
+block: declseq commandseq (blockans(declseq,commandseq,(ma get_blockreffromproc (listItems(!(#2 declseq)))),ref Empty))
 declseq: vardecls procdecls (vardecls,procdecls)
-        |   (([],[],[]),[])
-procdecls: procdef TSEMI procdecls  (procdef::procdecls)
-|       ([])
+        |   (([],[],[]),get_empty())
+procdecls: procdef TSEMI procdecls  (HashTable.insert(!procdecls)(get_id_from_proc(procdef),procdef);procdecls)
+|       (get_empty())
 procdef: TPROCEDURE TIDEN block (PROC_(TIDEN,ref block))
 vardecls: ratvardecls intvardecls boolvardecls ((ratvardecls,intvardecls,boolvardecls))
-ratvardecls: TRATIONAL TIDEN rep TSEMI (map RAT_ (TIDEN::rep))
+ratvardecls: TRATIONAL TIDEN rep TSEMI (ma RAT_ (TIDEN::rep))
             | ([])
-intvardecls: TINTEGER TIDEN rep TSEMI (map INT_ (TIDEN::rep))
+intvardecls: TINTEGER TIDEN rep TSEMI (ma INT_ (TIDEN::rep))
             | ([])
-boolvardecls: TBOOLEAN TIDEN rep TSEMI (map BOOL_ (TIDEN::rep))
+boolvardecls: TBOOLEAN TIDEN rep TSEMI (ma BOOL_ (TIDEN::rep))
                 | ([])
 rep: TCOMMA TIDEN rep (TIDEN::rep)
     | ([])

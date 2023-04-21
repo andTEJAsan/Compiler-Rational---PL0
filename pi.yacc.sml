@@ -9,18 +9,23 @@ struct
 structure Header = 
 struct
 open DataTypes
+fun ma f [] = []
+|   ma f (x::xs) = (f x) :: (ma f xs)
 fun get_blockreffromproc(PROC_(_,a : (blockans ref))) = a
 |   get_blockreffromproc(_) = ref Empty
 fun getlast(DataTypes.blockans(a,b,c,d))= d
 |   getlast(DataTypes.Empty) = ref DataTypes.Empty
 fun grand (n1:DataTypes.blockans )(x) = getlast(!x):= n1;
- fun dfs(bl as DataTypes.blockans(a,b,c,d) : DataTypes.blockans):unit =  (((map (grand(bl))) c) ;  let
+ fun dfs(bl as DataTypes.blockans(a,b,c,d) : DataTypes.blockans):unit =  (((ma (grand(bl))) c) ;  let
   fun repeater([]) = ()
   |   repeater(x::tl) = ((dfs(!x);repeater(tl));())
 in
         repeater(c)
 end) 
-
+fun get_empty() = ref(let val ht : (string, decls) HashTable.hash_table = HashTable.mkTable(HashString.hashString, op=)(17, Domain)
+in ht end)
+fun get_id_from_proc(PROC_(x,y)) = x
+|   get_id_from_proc(_)  = "bogus"
 
 
 end
@@ -391,9 +396,9 @@ datatype svalue = VOID | ntVOID of unit ->  unit
  | intvardecls of unit ->  ( ( decls list ) )
  | ratvardecls of unit ->  ( ( decls list ) )
  | procdef of unit ->  ( ( decls ) )
- | procdecls of unit ->  ( ( decls list ) )
+ | procdecls of unit ->  ( (  decls_table ref ) )
  | vardecls of unit ->  ( ( decls list ) * ( decls list ) * ( decls list ) )
- | declseq of unit ->  ( ( (decls list)*(decls list)*(decls list) ) * ( decls list ) )
+ | declseq of unit ->  ( ( (decls list)*(decls list)*(decls list) ) * (  decls_table ref ) )
  | block of unit ->  (blockans) | program of unit ->  (blockans)
 end
 type svalue = MlyValue.svalue
@@ -483,7 +488,7 @@ case (i392,stack)
 of  ( 0, ( ( _, ( MlyValue.block block1, block1left, block1right)) :: 
 rest671)) => let val  result = MlyValue.program (fn _ => let val  (
 block as block1) = block1 ()
- in (block)
+ in (dfs(block);block)
 end)
  in ( LrTable.NT 0, ( result, block1left, block1right), rest671)
 end
@@ -493,7 +498,7 @@ end
 declseq1) = declseq1 ()
  val  (commandseq as commandseq1) = commandseq1 ()
  in (
-blockans(declseq,commandseq,(map get_blockreffromproc (#2 declseq)),ref Empty)
+blockans(declseq,commandseq,(ma get_blockreffromproc (listItems(!(#2 declseq)))),ref Empty)
 )
 end)
  in ( LrTable.NT 1, ( result, declseq1left, commandseq1right), rest671
@@ -510,7 +515,7 @@ end)
 )
 end
 |  ( 3, ( rest671)) => let val  result = MlyValue.declseq (fn _ => (
-([],[],[]),[]))
+([],[],[]),get_empty()))
  in ( LrTable.NT 2, ( result, defaultPos, defaultPos), rest671)
 end
 |  ( 4, ( ( _, ( MlyValue.procdecls procdecls1, _, procdecls1right))
@@ -518,13 +523,15 @@ end
 rest671)) => let val  result = MlyValue.procdecls (fn _ => let val  (
 procdef as procdef1) = procdef1 ()
  val  (procdecls as procdecls1) = procdecls1 ()
- in (procdef::procdecls)
+ in (
+HashTable.insert(!procdecls)(get_id_from_proc(procdef),procdef);procdecls
+)
 end)
  in ( LrTable.NT 4, ( result, procdef1left, procdecls1right), rest671)
 
 end
 |  ( 5, ( rest671)) => let val  result = MlyValue.procdecls (fn _ => (
-[]))
+get_empty()))
  in ( LrTable.NT 4, ( result, defaultPos, defaultPos), rest671)
 end
 |  ( 6, ( ( _, ( MlyValue.block block1, _, block1right)) :: ( _, ( 
@@ -554,7 +561,7 @@ end
 , _)) :: rest671)) => let val  result = MlyValue.ratvardecls (fn _ =>
  let val  (TIDEN as TIDEN1) = TIDEN1 ()
  val  (rep as rep1) = rep1 ()
- in (map RAT_ (TIDEN::rep))
+ in (ma RAT_ (TIDEN::rep))
 end)
  in ( LrTable.NT 6, ( result, TRATIONAL1left, TSEMI1right), rest671)
 
@@ -568,7 +575,7 @@ end
 TINTEGER1left, _)) :: rest671)) => let val  result = 
 MlyValue.intvardecls (fn _ => let val  (TIDEN as TIDEN1) = TIDEN1 ()
  val  (rep as rep1) = rep1 ()
- in (map INT_ (TIDEN::rep))
+ in (ma INT_ (TIDEN::rep))
 end)
  in ( LrTable.NT 7, ( result, TINTEGER1left, TSEMI1right), rest671)
 
@@ -582,7 +589,7 @@ end
 TBOOLEAN1left, _)) :: rest671)) => let val  result = 
 MlyValue.boolvardecls (fn _ => let val  (TIDEN as TIDEN1) = TIDEN1 ()
  val  (rep as rep1) = rep1 ()
- in (map BOOL_ (TIDEN::rep))
+ in (ma BOOL_ (TIDEN::rep))
 end)
  in ( LrTable.NT 8, ( result, TBOOLEAN1left, TSEMI1right), rest671)
 

@@ -1,8 +1,13 @@
+
 structure DataTypes =
 struct
+open HashTable;
 type id = string
+
 datatype prog = Prog;
-datatype decls = INT_ of id | RAT_ of id | BOOL_ of id | PROC_ of (id*(blockans ref))
+
+datatype decls = INT_ of id | RAT_ of id | BOOL_ of id | PROC_ of (id*(blockans ref)) | proc of id
+
 
 and  Expression = negative of Expression
                       | inverse of Expression
@@ -32,6 +37,7 @@ and Cmd = AssignmentCmd of (id*Expression) | PrintCmd of Expression | Conditiona
               | WhileCmd of (Expression*(Cmd list))  
             | CallCmd of id
             | ReadCmd of id
-and blockans = blockans of (((decls list)*(decls list)*(decls list))*(decls list))*(Cmd list)*((blockans ref) list)*(blockans ref) | Empty
+and blockans = blockans of (((decls list)*(decls list)*(decls list))*(((string,decls) HashTable.hash_table) ref))*(Cmd list)*((blockans ref) list)*(blockans ref)| Empty
 
+type decls_table = ((string,decls) HashTable.hash_table)
 end;
