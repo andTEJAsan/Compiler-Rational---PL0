@@ -1,2 +1,2 @@
 Skeleton 5
-ad"DataTypes"h2egp1ä¢HashTable"f3d"Rational"ÿd"BigInt"
+d2f3d"Rational"d"HashTable"d"BigInt"ad"DataTypes"h0

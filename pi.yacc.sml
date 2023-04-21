@@ -9,14 +9,12 @@ struct
 structure Header = 
 struct
 open DataTypes
-fun ma f [] = []
-|   ma f (x::xs) = (f x) :: (ma f xs)
 fun get_blockreffromproc(PROC_(_,a : (blockans ref))) = a
 |   get_blockreffromproc(_) = ref Empty
-fun getlast(DataTypes.blockans(a,b,c,d))= d
+fun getlast(DataTypes.blockans(a,b,c,d,e))= d
 |   getlast(DataTypes.Empty) = ref DataTypes.Empty
 fun grand (n1:DataTypes.blockans )(x) = getlast(!x):= n1;
- fun dfs(bl as DataTypes.blockans(a,b,c,d) : DataTypes.blockans):unit =  (((ma (grand(bl))) c) ;  let
+ fun dfs(bl as DataTypes.blockans(a,b,c,d,e) : DataTypes.blockans):unit =  (((map (grand(bl))) c) ;  let
   fun repeater([]) = ()
   |   repeater(x::tl) = ((dfs(!x);repeater(tl));())
 in
@@ -24,8 +22,13 @@ in
 end) 
 fun get_empty() = ref(let val ht : (string, decls) HashTable.hash_table = HashTable.mkTable(HashString.hashString, op=)(17, Domain)
 in ht end)
+fun get_emptysym() = ref(let val ht : (string, sym option) HashTable.hash_table = HashTable.mkTable(HashString.hashString, op=)(17, Domain)
+in ht end)
 fun get_id_from_proc(PROC_(x,y)) = x
 |   get_id_from_proc(_)  = "bogus"
+fun getter(l) = let val shimt = get_emptysym() in initialize_sym(l,shimt);shimt end 
+
+
 
 
 end
@@ -498,7 +501,7 @@ end
 declseq1) = declseq1 ()
  val  (commandseq as commandseq1) = commandseq1 ()
  in (
-blockans(declseq,commandseq,(ma get_blockreffromproc (listItems(!(#2 declseq)))),ref Empty)
+blockans(declseq,commandseq,(map get_blockreffromproc (HashTable.listItems(!(#2 declseq)))),ref Empty,getter((#1(#1 declseq))@(#2(#1 declseq))@(#3(#1 declseq))))
 )
 end)
  in ( LrTable.NT 1, ( result, declseq1left, commandseq1right), rest671
@@ -561,7 +564,7 @@ end
 , _)) :: rest671)) => let val  result = MlyValue.ratvardecls (fn _ =>
  let val  (TIDEN as TIDEN1) = TIDEN1 ()
  val  (rep as rep1) = rep1 ()
- in (ma RAT_ (TIDEN::rep))
+ in (map RAT_ (TIDEN::rep))
 end)
  in ( LrTable.NT 6, ( result, TRATIONAL1left, TSEMI1right), rest671)
 
@@ -575,7 +578,7 @@ end
 TINTEGER1left, _)) :: rest671)) => let val  result = 
 MlyValue.intvardecls (fn _ => let val  (TIDEN as TIDEN1) = TIDEN1 ()
  val  (rep as rep1) = rep1 ()
- in (ma INT_ (TIDEN::rep))
+ in (map INT_ (TIDEN::rep))
 end)
  in ( LrTable.NT 7, ( result, TINTEGER1left, TSEMI1right), rest671)
 
@@ -589,7 +592,7 @@ end
 TBOOLEAN1left, _)) :: rest671)) => let val  result = 
 MlyValue.boolvardecls (fn _ => let val  (TIDEN as TIDEN1) = TIDEN1 ()
  val  (rep as rep1) = rep1 ()
- in (ma BOOL_ (TIDEN::rep))
+ in (map BOOL_ (TIDEN::rep))
 end)
  in ( LrTable.NT 8, ( result, TBOOLEAN1left, TSEMI1right), rest671)
 

@@ -1,12 +1,10 @@
 open DataTypes
-fun ma f [] = []
-|   ma f (x::xs) = (f x) :: (ma f xs)
 fun get_blockreffromproc(PROC_(_,a : (blockans ref))) = a
 |   get_blockreffromproc(_) = ref Empty
-fun getlast(DataTypes.blockans(a,b,c,d))= d
+fun getlast(DataTypes.blockans(a,b,c,d,e))= d
 |   getlast(DataTypes.Empty) = ref DataTypes.Empty
 fun grand (n1:DataTypes.blockans )(x) = getlast(!x):= n1;
- fun dfs(bl as DataTypes.blockans(a,b,c,d) : DataTypes.blockans):unit =  (((ma (grand(bl))) c) ;  let
+ fun dfs(bl as DataTypes.blockans(a,b,c,d,e) : DataTypes.blockans):unit =  (((map (grand(bl))) c) ;  let
   fun repeater([]) = ()
   |   repeater(x::tl) = ((dfs(!x);repeater(tl));())
 in
@@ -14,8 +12,13 @@ in
 end) 
 fun get_empty() = ref(let val ht : (string, decls) HashTable.hash_table = HashTable.mkTable(HashString.hashString, op=)(17, Domain)
 in ht end)
+fun get_emptysym() = ref(let val ht : (string, sym option) HashTable.hash_table = HashTable.mkTable(HashString.hashString, op=)(17, Domain)
+in ht end)
 fun get_id_from_proc(PROC_(x,y)) = x
 |   get_id_from_proc(_)  = "bogus"
+fun getter(l) = let val shimt = get_emptysym() in initialize_sym(l,shimt);shimt end 
+
+
 
 %%
 %name Pi
@@ -117,18 +120,18 @@ fun get_id_from_proc(PROC_(x,y)) = x
 %start program
 %%
 program: block (dfs(block);block)
-block: declseq commandseq (blockans(declseq,commandseq,(ma get_blockreffromproc (listItems(!(#2 declseq)))),ref Empty))
+block: declseq commandseq (blockans(declseq,commandseq,(map get_blockreffromproc (HashTable.listItems(!(#2 declseq)))),ref Empty,getter((#1(#1 declseq))@(#2(#1 declseq))@(#3(#1 declseq)))))
 declseq: vardecls procdecls (vardecls,procdecls)
         |   (([],[],[]),get_empty())
 procdecls: procdef TSEMI procdecls  (HashTable.insert(!procdecls)(get_id_from_proc(procdef),procdef);procdecls)
 |       (get_empty())
 procdef: TPROCEDURE TIDEN block (PROC_(TIDEN,ref block))
 vardecls: ratvardecls intvardecls boolvardecls ((ratvardecls,intvardecls,boolvardecls))
-ratvardecls: TRATIONAL TIDEN rep TSEMI (ma RAT_ (TIDEN::rep))
+ratvardecls: TRATIONAL TIDEN rep TSEMI (map RAT_ (TIDEN::rep))
             | ([])
-intvardecls: TINTEGER TIDEN rep TSEMI (ma INT_ (TIDEN::rep))
+intvardecls: TINTEGER TIDEN rep TSEMI (map INT_ (TIDEN::rep))
             | ([])
-boolvardecls: TBOOLEAN TIDEN rep TSEMI (ma BOOL_ (TIDEN::rep))
+boolvardecls: TBOOLEAN TIDEN rep TSEMI (map BOOL_ (TIDEN::rep))
                 | ([])
 rep: TCOMMA TIDEN rep (TIDEN::rep)
     | ([])
