@@ -1,4 +1,12 @@
-integer x;
+integer a,b,maxVal;
 {
-    print(x);
+    maxVal := 15;
+    a := 1;
+    b := 1;
+    while a < maxVal do 
+    {
+        a := a+1;
+        b := b*a;
+        print(b);
+    } od ;
 }

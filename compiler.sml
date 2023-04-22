@@ -2,13 +2,40 @@
 
 structure Interpreter =
 struct
+exception FoolError
 exception TypeError
 exception NotDeclaredError
 exception NotInitializedError  
-(*fun parent(env : DataTypes.blockans ref) =
+fun get_proc_symt(env : DataTypes.blockans ref) = 
 case (!env) of
-   DataTypes.blockans(a,b,c,d,e) => 
- | pat2 => body2*)
+   DataTypes.blockans(a,b,c,d,e) => (
+    (#2 a)
+   )
+ | _ => (print("WTF NO\n");raise FoolError)
+fun get_var_symt(env : DataTypes.blockans ref) = 
+case (!env) of
+   DataTypes.blockans(a,b,c,d,e) => e
+ | _ => (print("WTF NO\n");raise FoolError)
+
+fun parent(env : DataTypes.blockans ref) =
+
+case (!env) of
+   DataTypes.blockans(a,b,c,d,e) => d
+ | DataTypes.Empty => (print("I dont have a parent :( \n");ref DataTypes.Empty)
+fun search_id(i : DataTypes.id,env: DataTypes.blockans ref) = 
+let
+  val symt =  !(get_var_symt(env))
+  val search_result = ((HashTable.find symt) i)
+in
+  case search_result of
+     NONE => (
+      case parent(env) of 
+      ref(DataTypes.Empty) =>(print("Variable \""^i^"\" hasn't been declared in any appropriate scope");raise NotDeclaredError)
+     | _ => search_id(i,parent(env))
+     )
+
+   |  _ => (env)
+end
 fun eval_expr(E : DataTypes.Expression,env : DataTypes.blockans ref) = 
 case E of
    DataTypes.negative(P) => (
@@ -36,7 +63,11 @@ in ht end)
    in
 
     case obtained of 
-    NONE => (print("Variable \""^id^"\" not declared in the given scope but used."); raise NotDeclaredError)
+    NONE => (
+      case parent(env) of
+       ref (DataTypes.Empty) => (print("Variable \""^id^"\" not declared in any scope but used."); raise NotDeclaredError)
+     | _  => eval_expr(E,parent(env))
+    )
     | SOME(SOME (DataTypes.INTs(r))) => DataTypes.INTs r
     | SOME( SOME(DataTypes.RATs (r)) )=> DataTypes.RATs r
     | SOME( SOME(DataTypes.BOOLs(r)) )=> DataTypes.BOOLs r
@@ -200,7 +231,57 @@ case (eval_expr(P,env),eval_expr(Q,env)) of
 |   DataTypes.rate(X) => (DataTypes.RATs X)
 |   DataTypes.boole(X) =>(DataTypes.BOOLs X)
 
+fun execute_single(cmd : DataTypes.Cmd, env : DataTypes.blockans ref) = 
+case cmd of
+   DataTypes.PrintCmd(E) => (
+    let
+      val ans = eval_expr(E,env)
+    in
+    case ans of 
+    DataTypes.BOOLs(true) => (print("tt\n");())
+    | DataTypes.BOOLs(false) => (print("ff\n");())
+    | DataTypes.INTs(i) => (print(BigInt.toString(i)^"\n");())
+    | DataTypes.RATs(r) => (print(Rational.showDecimal(r)^"\n");())
+    end
+   )
+ | DataTypes.AssignmentCmd(s,E) => (
+  let
+    val present_scope = search_id(s,env) (*type blockans ref*)
+    val symtab = (!(get_var_symt(present_scope)))
+    val newval = SOME (eval_expr(E,env)) (* type sym*)
+    val toinsert = (s,newval)
+  in
+    HashTable.insert symtab toinsert
+  end
 
+ )
+ | DataTypes.ConditionalCmd(cond,A,B) => (
+
+let
+  val verdict = eval_expr(cond,env)
+in
+  case verdict of
+     DataTypes.BOOLs(true) => execute_multi(A,env)
+   | DataTypes.BOOLs(false) => execute_multi(B,env)
+   | _ => (print("Only boolean expressions allowed as the decider, You have entered the wrong type of expression instead. Please Check\n");raise TypeError)
+end
+
+ )
+ | DataTypes.WhileCmd(cond, cmdl) =>(
+let
+  val verdict = eval_expr(cond,env)
+in
+  case verdict of
+    DataTypes.BOOLs(true) => (execute_multi(cmdl, env);execute_single(cmd,env))
+   | DataTypes.BOOLs(false) => ()
+end
+ )
+ | _ => ()
+
+ and execute_multi(cmdl : DataTypes.Cmd list,env : DataTypes.blockans ref) = 
+ case cmdl of
+    [] => ()
+  | (x::xs) => (execute_single(x,env);execute_multi(xs,env))
 end;
 
 signature PI =
@@ -210,6 +291,7 @@ sig
     exception PiError;
     val compile : string -> DataTypes.blockans;
     val dummy : string -> DataTypes.sym;
+    val interpret : string -> unit;
   (* val walk : DataTypes.blockans -> unit
   val interpret : string -> unit*)
 end;
@@ -255,4 +337,16 @@ fun dummy(filename) =
     in
       Interpreter.eval_expr(command,env) 
     end
+fun interpret(filename) = 
+let
+  val compiled = compile filename
+  val env = ref compiled
+  val cmds = (
+    case compiled of 
+    DataTypes.blockans(a,b,c,d,e) => b
+    | DataTypes.Empty => []
+  )
+in
+  Interpreter.execute_multi(cmds,env)
+end
 end;
