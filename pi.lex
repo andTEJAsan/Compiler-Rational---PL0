@@ -29,7 +29,9 @@ ws = [\ \t];
 eol = ("\013\010"|"\010"|"\013");
 idchars = [A-Za-z'_0-9];
 id= [A-Za-z]{idchars}*;
+comment = ("(\*")([^\*]|\*[^)])*("\*)");
 %%
+{comment} => (continue());
 {ws}* => (continue());
 {eol} => (inc lin;eolpos:=yypos+size yytext;continue());
 [~]?{digit}*"."{digit}*"("{digit}+")" => (T.TRATNUM((Rational.fromDecimal(yytext)),!lin,!col));

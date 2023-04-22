@@ -6,6 +6,26 @@ exception FoolError
 exception TypeError
 exception NotDeclaredError
 exception NotInitializedError  
+exception InputError
+fun xtractor(s : DataTypes.id) (x : DataTypes.decls) = 
+case x of 
+DataTypes.INT_(s) => SOME (DataTypes.INT_(s))
+| DataTypes.BOOL_(s) => SOME (DataTypes.BOOL_(s))
+| DataTypes.RAT_(s) => SOME(DataTypes.RAT_(s))
+| _ => NONE
+fun getdectype(s)([]) = NONE
+|   getdectype(s)(x::xs) = case  xtractor(s)(x) of
+   NONE => getdectype(s)(xs)
+ | SOME(a) => SOME(a)
+fun get_decls(env : DataTypes.blockans ref)=
+case (!env) of 
+  DataTypes.blockans(((l,m,n),k),b,c,d,e) => (l@m@n)
+| _ => (print("WTF NO\n");raise FoolError)
+fun get_cmdseq(env : DataTypes.blockans ref) = 
+
+case (!env) of
+   DataTypes.blockans(a,b,c,d,e) => b
+ | _  => (print("WTF NO\n");raise FoolError)
 fun get_proc_symt(env : DataTypes.blockans ref) = 
 case (!env) of
    DataTypes.blockans(a,b,c,d,e) => (
@@ -35,6 +55,20 @@ in
      )
 
    |  _ => (env)
+end
+fun search_procid(i: DataTypes.id, env: DataTypes.blockans ref) = 
+let
+  val symt = !(get_proc_symt(env))
+  val search_result = ((HashTable.find symt) i)
+in
+case search_result of 
+     NONE => (
+      case parent(env) of 
+      ref(DataTypes.Empty) =>(print("Procedure \""^i^"\" hasn't been declared in any appropriate scope");raise NotDeclaredError)
+     | _ => search_procid(i,parent(env))
+     )
+    | _ => (env)
+
 end
 fun eval_expr(E : DataTypes.Expression,env : DataTypes.blockans ref) = 
 case E of
@@ -274,9 +308,66 @@ in
   case verdict of
     DataTypes.BOOLs(true) => (execute_multi(cmdl, env);execute_single(cmd,env))
    | DataTypes.BOOLs(false) => ()
+   | _ => (print("Expression should be a boolean expression\n");raise TypeError)
 end
  )
- | _ => ()
+ | DataTypes.CallCmd(id) => (
+ let
+   val present_scope = search_procid(id,env)
+   val cmdseq = get_cmdseq(present_scope)
+ in
+   execute_multi(cmdseq, present_scope)
+ end
+ )
+ | DataTypes.ReadCmd(id) => (
+let
+  val present_scope = search_id(id,env)
+  val declist = get_decls(present_scope)
+  
+  val gettype = getdectype(id)(declist)
+in
+case gettype of
+   NONE => (
+    print("Cannot Read to \""^id^"\" as it has not been declared");
+    raise NotDeclaredError
+   )
+ | SOME(DataTypes.INT_(a)) => (
+let
+  val inputLine = valOf(TextIO.inputLine TextIO.stdIn)
+  val num = String.substring(inputLine,0,size(inputLine)-1)
+  val symentryexp = DataTypes.inte(BigInt.fromString(num))
+  val command = DataTypes.AssignmentCmd(id,symentryexp)
+in
+  execute_single(command,env)
+end
+ )
+| SOME(DataTypes.BOOL_(a)) => (
+let
+  val inputLine = valOf(TextIO.inputLine TextIO.stdIn)
+  val num = String.substring(inputLine,0,size(inputLine)-1)
+  val symentryexp = (case num of
+  "tt" => DataTypes.boole(true) 
+  | "ff" => DataTypes.boole(false) 
+  | _ => (print("Enter the boolean value in the correct format");raise InputError)
+  )
+  val command = DataTypes.AssignmentCmd(id,symentryexp)
+in
+  execute_single(command,env)
+end
+ )
+| SOME(DataTypes.RAT_(a)) => (
+let
+  val inputLine = valOf(TextIO.inputLine TextIO.stdIn)
+  val num = String.substring(inputLine,0,size(inputLine)-1)
+  val symentryexp = DataTypes.rate(Rational.fromDecimal(num)) 
+  val command = DataTypes.AssignmentCmd(id,symentryexp)
+in
+  execute_single(command,env)
+end
+ )
+| _ => (print("I Hope it never comes to this\n");raise TypeError)
+end
+ )
 
  and execute_multi(cmdl : DataTypes.Cmd list,env : DataTypes.blockans ref) = 
  case cmdl of
