@@ -24,7 +24,7 @@ case (!env) of
 fun get_cmdseq(env : DataTypes.blockans ref) = 
 
 case (!env) of
-   DataTypes.blockans(a,b,c,d,e) => b
+   DataTypes.blockans(a,b,c,d,e) => (b)
  | _  => (print("WTF NO\n");raise FoolError)
 fun get_proc_symt(env : DataTypes.blockans ref) = 
 case (!env) of
@@ -314,9 +314,14 @@ end
  | DataTypes.CallCmd(id) => (
  let
    val present_scope = search_procid(id,env)
-   val cmdseq = get_cmdseq(present_scope)
+   val proc_symt = !(get_proc_symt(present_scope))
+   val scope_toexecute = (case (HashTable.lookup) proc_symt id  of 
+   DataTypes.PROC_(yu,tyt) => tyt
+   | _ => (print("It should never come to this\n");raise FoolError)
+   )
+   val cmdseq = get_cmdseq(scope_toexecute)
  in
-   execute_multi(cmdseq, present_scope)
+   execute_multi(cmdseq, scope_toexecute)
  end
  )
  | DataTypes.ReadCmd(id) => (
