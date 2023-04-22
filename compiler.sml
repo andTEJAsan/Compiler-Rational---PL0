@@ -35,29 +35,94 @@ struct
     in 
         tree
     end
- (*fun walk(DataTypes.blockans(_  ,[])) = print("Interpretation Done\n")
-| walk(DataTypes.blockans(z,x::a)) =
-    case x of
-       DataTypes.PrintCmd(y) => (print( eval_expr(y) ^ "\n"); walk(DataTypes.blockans(z,a)))
-     | _ => print("not implemented yet\n")
-    and eval_expr(DataTypes.boole(true)) = "true" 
-        | eval_expr(DataTypes.boole(false)) = "false"
-        | eval_expr(DataTypes.boolor(a,b)) = let val first = valOf(Bool.fromString(eval_expr(a))) val second = valOf(Bool.fromString(eval_expr(b)))in Bool.toString(first orelse second) end 
-        | eval_expr(DataTypes.booland(a,b)) = let val first = valOf(Bool.fromString(eval_expr(a))) val second = valOf(Bool.fromString(eval_expr(b)))in Bool.toString(first andalso second) end 
-        | eval_expr(DataTypes.not (e)) = let val first = valOf(Bool.fromString(eval_expr(e)))in Bool.toString(not first) end
-        | eval_expr(_) = "not implemented yet"
-fun interpret(filename) = walk(compile filename)
-*)
-   
 end;
-(*fun set_ref (n1: DataTypes.blockans,ref DataTypes.blockans(a,b,c,d)) = d :=n1;()*)
-(*fun getlast(DataTypes.blockans(a,b,c,d))= d
-|   getlast(DataTypes.Empty) = ref DataTypes.Empty
-fun grand (n1:DataTypes.blockans )(x) = getlast(!x):= n1;
- fun dfs(bl as DataTypes.blockans(a,b,c,d) : DataTypes.blockans):unit =  (((map (grand(bl))) c) ;  let
-  fun repeater([]) = ()
-  |   repeater(x::tl) = ((dfs(!x);repeater(tl));())
-in
-        repeater(c)
-end) 
-*)
+open DataTypes
+open HashTable
+fun eval_expr(E : DataTypes.Expression,env : DataTypes.blockans ref) = 
+case E of
+   negative(P) => (
+    case P of
+       INTs(a) => INTs(BigInt.neg(a))
+     | RATs(a) => RATs(Rational.neg(a))
+     | BOOLs(a) => (print("Type Error, can't apply \"~\" to a boolean expression");raise TypeError)
+   )
+| inverse(P) => (
+    case P of
+       INTs(a) => ( print("Type Error, can't apply \"inverse\" to a integer expression");raise TypeError)
+
+     | RATs(a) => RATs(valOf Rational.inverse(a))
+     | BOOLs(a) =>( print("Type Error, can't apply \"inverse\" to a boolean expression");raise TypeError)
+   )
+
+| refrence(id) => (
+   let
+     val symt = !(#5 env )
+     val obtained = find (symt) (id)
+   in
+
+    case obtained of 
+    NONE => (print("Variable \""^id^"\" not declared in the given scope but used."); raise NotDeclaredError)
+    |SOME NONE => (print("Variable \""^id^"\" not initialized in the given scope but used."); raise NotInitializedError)
+    | SOME (INTs(r)) => INTs r
+    | SOME (RATs (r)) => RATs r
+    | SOME (BOOLs(r)) => BOOLs r
+   end
+   )
+| not(P) => (
+    case P of
+       INTs(a) => ( print("Type Error, can't apply \"not\" to a integer expression");raise TypeError)
+
+     | RATs(a) =>  ( print("Type Error, can't apply \"not\" to a rational expression");raise TypeError)
+
+     | BOOLs(a) => (BOOLs(not a))
+
+)
+|   ratadd(P,Q) =>(
+
+case (P,Q) of 
+
+(RATs p, RATs q) => RATs(Rational.add(p,q))
+| _ => (print("Can't use .+. between two expressions of non rational type");raise TypeError)
+
+)
+|   ratsub(P,Q) =>(
+
+case (P,Q) of 
+
+(RATs p, RATs q) => RATs(Rational.subtract(p,q))
+| _ => (print("Can't use .-. between two expressions of non rational type");raise TypeError)
+
+)
+|   ratmul(P,Q) =>(
+
+case (P,Q) of 
+
+(RATs p, RATs q) => RATs(Rational.multiply(p,q))
+| _ => (print("Can't use .*. between two expressions of non rational type");raise TypeError)
+
+)
+|   ratadd(P,Q) =>(
+
+case (P,Q) of 
+
+(RATs p, RATs q) => RATs(Rational.add(p,q))
+| _ => (print("Can't use .+. between two expressions of non rational type");raise TypeError)
+
+)
+|   ratadd(P,Q) =>(
+
+case (P,Q) of 
+
+(RATs p, RATs q) => RATs(Rational.add(p,q))
+| _ => (print("Can't use .+. between two expressions of non rational type");raise TypeError)
+
+)
+
+
+
+
+
+
+
+close;
+close;

@@ -1,4 +1,4 @@
-integer x;boolean y;procedure foo integer x;{print(y);}; 
+integer x;boolean x;procedure foo integer x;{print(y);}; 
 {
     x:=7;
     call foo; 
