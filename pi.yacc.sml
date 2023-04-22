@@ -770,7 +770,7 @@ end
 )) :: ( _, ( _, TNOT1left, _)) :: rest671)) => let val  result = 
 MlyValue.expression (fn _ => let val  (expression as expression1) = 
 expression1 ()
- in (not(expression))
+ in (notb(expression))
 end)
  in ( LrTable.NT 10, ( result, TNOT1left, expression1right), rest671)
 

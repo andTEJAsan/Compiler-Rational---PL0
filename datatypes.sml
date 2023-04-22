@@ -12,7 +12,7 @@ and sym = INTs of BigInt.bigint | RATs of Rational.rational | BOOLs of bool
 and  Expression = negative of Expression
                       | inverse of Expression
                       | reference of id
-                      | not of Expression
+                      | notb of Expression
                       | ratadd of Expression*Expression
                       | ratsub of Expression*Expression
                       | ratmul of Expression*Expression

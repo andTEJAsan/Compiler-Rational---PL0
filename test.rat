@@ -1,6 +1,4 @@
-integer x;boolean x;procedure foo integer x;{print(y);}; 
+integer x;
 {
-    x:=7;
-    call foo; 
     print(x);
 }
