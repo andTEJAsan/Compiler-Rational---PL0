@@ -57,7 +57,7 @@ fun initialize_sym([],l) = ()
  | NONE => ((HashTable.insert (!l) (extractor(x),NONE));())
 )
 end) in initialize_sym(xs,l) end
-fun get_emtysym() = ref(let val ht : (string, sym option) HashTable.hash_table = HashTable.mkTable(HashString.hashString, op=)(17, Domain)
+fun get_emtysym() = ref(let val ht : (string, sym option) HashTable.hash_table = HashTable.mkTable(HashString.hashString, op=)(49, Domain)
 in ht end)
 fun geter(l) = let val shimt = get_emtysym() in initialize_sym(l,shimt);shimt end 
 

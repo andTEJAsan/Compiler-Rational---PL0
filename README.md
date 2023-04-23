@@ -29,6 +29,8 @@ E ::= ~ E
     | intval
     | ratval
     | boolval
+    | make_rat(E,E)
+    | fromDecimal(E)
     
 3. We will do type checking during evaluation of AST
 4. For each block the following attributes have been made during AST formation and then changed during execution
@@ -57,7 +59,19 @@ E ::= ~ E
  
 
 %right TNEG TINV
-
+12. Nested Comments are not supported like in C language
+13. To ignore comments during lexing, States have been used in ML-lex settings
+14. Here is a small description of what each file does :-
+    core.sml -> contains implementations of BigInt, Rational packages
+    pi.lex -> contains the lexer
+    pi.yacc -> contains the attribute grammar which build the ASTRee
+    datatypes.sml -> contains the datastructures that are used in the ASTRee formation
+    glue.sml -> glues the lexer and the parser (Boilerplate)
+    pi.cm -> makes sure all the packages are visible
+    make.sml -> sets up the interface for the user
+    pi.yacc.desc -> A readable description of the generated LR Table used in Parsing
+    compiler.sml -> Walks the ASTree and interprets the input file 
+    For Interpretation, in the compiler.sml we have used a recursive function to walk the ASTRee
 
 Acknowledgements
 ________________

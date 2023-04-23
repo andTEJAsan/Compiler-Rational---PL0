@@ -20,9 +20,9 @@ fun grand (n1:DataTypes.blockans )(x) = getlast(!x):= n1;
 in
         repeater(c)
 end) 
-fun get_empty() = ref(let val ht : (string, decls) HashTable.hash_table = HashTable.mkTable(HashString.hashString, op=)(17, Domain)
+fun get_empty() = ref(let val ht : (string, decls) HashTable.hash_table = HashTable.mkTable(HashString.hashString, op=)(49, Domain)
 in ht end)
-fun get_emptysym() = ref(let val ht : (string, sym option) HashTable.hash_table = HashTable.mkTable(HashString.hashString, op=)(17, Domain)
+fun get_emptysym() = ref(let val ht : (string, sym option) HashTable.hash_table = HashTable.mkTable(HashString.hashString, op=)(49, Domain)
 in ht end)
 fun get_id_from_proc(PROC_(x,y)) = x
 |   get_id_from_proc(_)  = "bogus"
