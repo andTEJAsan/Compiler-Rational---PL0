@@ -3,6 +3,7 @@ structure DataTypes =
 struct
 type id = string
 exception InitializationError
+exception DeclarationError
 datatype prog = Prog;
 
 datatype decls = INT_ of id | RAT_ of id | BOOL_ of id | PROC_ of (id*(blockans ref)) | proc of id
@@ -52,7 +53,7 @@ fun initialize_sym([],l) = ()
 (let val f=  HashTable.find (!l) (extractor(x))  in 
 
 (case f of
-   SOME a =>( print("Initialization Error , Initialized \" " ^extractor(x)^" \" more then once Can't Initialize a variable more than once\n");raise InitializationError)
+   SOME a =>( print("Declaration Error , Declared \" " ^extractor(x)^" \" more then once Can't Declare a variable more than once\n");raise DeclarationError)
  | NONE => ((HashTable.insert (!l) (extractor(x),NONE));())
 )
 end) in initialize_sym(xs,l) end

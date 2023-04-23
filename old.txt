@@ -1,0 +1,1 @@
+Can't use && between two expressions of non boolean type

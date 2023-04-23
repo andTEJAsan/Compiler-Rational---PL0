@@ -4,7 +4,7 @@ Instructions To Run the interpreter
 3. To see the ASTree, type compile(inputfile)
 3. For read statements, input will be taken from the terminal, press Enter to stop reading
 Design Decisions:-
-1. To Prevent Shift Reduce Conflist, the grammar of expressions was modified
+1. To Prevent Shift Reduce Conflicts, the grammar of expressions was modified
 2. The modified grammar of expressions
 E ::= ~ E
     | inverse E
@@ -29,9 +29,23 @@ E ::= ~ E
     | intval
     | ratval
     | boolval
+    
 3. We will do type checking during evaluation of AST
+4. For each block the following attributes have been made during AST formation and then changed during execution
+# Declarations Table
+# Procedure Declarations Table
+# Command List
+# A Reference list of children blocks (This was built during the ASTree formation, it is a synthesized attribute)
+# A Reference to the Parent block
+# A Stack of SymbolTables
+5. We have made the ASTRee using the sml datatype constructor which allows us to construct recursive data-structures
+6. To get the parent references for each block, we started a Depth-First Search from the main block.
+7. Whenever an identifier is mentioned , we check its availability in the parent chain of the scope in which it is mentioned.
+8. You are not allowed to have vardecls of the same name in the same block (possible to have in different scopes) 
+9. You are not allowed to have procdecls of the same name in the same block (possible in different blocks)
+10. Whenever a procedure is called, a newsymbol table is added to the symboltable stack to initialize its local variables this will enable recursion to work correctly
 
 
 Acknowledgements
 ________________
-1.I took the help of the example given in the ML-lex Ml-Yacc User guide and documentation
+1.For the boilerplate I took the help of the example given in the ML-lex Ml-Yacc User guide and documentation

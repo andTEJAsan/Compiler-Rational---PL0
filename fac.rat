@@ -1,5 +1,5 @@
-(* Author: Ramneet Singh *)
-(* Recursive Factorial Program in the Language Rational+PL0 *)
+(* Author: Ramneet Singh 
+ Recursive Factorial Program in the Language Rational+PL0 *)
 
 integer factorialArg, factorialResult;
 

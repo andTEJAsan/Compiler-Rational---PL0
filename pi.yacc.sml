@@ -32,6 +32,11 @@ fun getterl(l) = ref([getter(l)])
 fun newsym(env : blockans ref) = case (!env) of
    DataTypes.blockans(((z1,z2,z3),y),b,c,d,e) => getter((z1@z2@z3))
  | _ => (print("It should never come to this\n");raise DataTypes.InitializationError)
+fun check(id,symt) = (
+        case (HashTable.find(symt)(id) ) of
+           SOME a => (print("Can't Have more than One procedure declaration with the name \""^id^"\" in the same block"); raise DeclarationError)
+         | _ => ()
+)
 
 
 end
@@ -562,7 +567,7 @@ rest671)) => let val  result = MlyValue.procdecls (fn _ => let val  (
 procdef as procdef1) = procdef1 ()
  val  (procdecls as procdecls1) = procdecls1 ()
  in (
-HashTable.insert(!procdecls)(get_id_from_proc(procdef),procdef);procdecls
+check(get_id_from_proc(procdef),(!procdecls));HashTable.insert(!procdecls)(get_id_from_proc(procdef),procdef);procdecls
 )
 end)
  in ( LrTable.NT 4, ( result, procdef1left, procdecls1right), rest671)

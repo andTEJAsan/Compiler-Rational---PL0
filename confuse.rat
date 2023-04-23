@@ -1,9 +1,12 @@
 boolean ACalledTwice;
 procedure first
+    (*
+    Hello this is a comment test
+    *)
     integer a;
     procedure second
     {
-        a := a + 10;
+        a := a  && 10;
     };
 {
     a:= 0;
@@ -24,4 +27,5 @@ procedure first
 
     ACalledTwice := ff;
     call first;
+    print(2 / 3 + 4);
 }

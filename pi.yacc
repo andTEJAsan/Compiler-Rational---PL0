@@ -22,6 +22,11 @@ fun getterl(l) = ref([getter(l)])
 fun newsym(env : blockans ref) = case (!env) of
    DataTypes.blockans(((z1,z2,z3),y),b,c,d,e) => getter((z1@z2@z3))
  | _ => (print("It should never come to this\n");raise DataTypes.InitializationError)
+fun check(id,symt) = (
+        case (HashTable.find(symt)(id) ) of
+           SOME a => (print("Can't Have more than One procedure declaration with the name \""^id^"\" in the same block"); raise DeclarationError)
+         | _ => ()
+)
 
 %%
 %name Pi
@@ -127,7 +132,7 @@ program: block (dfs(block);block)
 block: declseq commandseq (blockans(declseq,commandseq,(map get_blockreffromproc (HashTable.listItems(!(#2 declseq)))),ref Empty,getterl((#1(#1 declseq))@(#2(#1 declseq))@(#3(#1 declseq)))))
 declseq: vardecls procdecls (vardecls,procdecls)
         |   (([],[],[]),get_empty())
-procdecls: procdef TSEMI procdecls  (HashTable.insert(!procdecls)(get_id_from_proc(procdef),procdef);procdecls)
+procdecls: procdef TSEMI procdecls  (check(get_id_from_proc(procdef),(!procdecls));HashTable.insert(!procdecls)(get_id_from_proc(procdef),procdef);procdecls)
 |       (get_empty())
 procdef: TPROCEDURE TIDEN block (PROC_(TIDEN,ref block))
 vardecls: ratvardecls intvardecls boolvardecls ((ratvardecls,intvardecls,boolvardecls))
