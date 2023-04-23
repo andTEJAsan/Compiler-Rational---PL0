@@ -50,7 +50,8 @@ comment = ("(\*")([^\*]|\*[^)])*("\*)");
 "procedure" => (col:=yypos-(!eolpos);T.TPROCEDURE(!lin,!col));
 "read" => (col:=yypos-(!eolpos);T.TREAD(!lin,!col));
 "call" => (col:=yypos-(!eolpos);T.TCALL(!lin,!col));
-
+"make_rat" => (col:=yypos-(!eolpos);T.TMAKERAT(!lin,!col));
+"fromDecimal" => (col:=yypos-(!eolpos);T.TFROMDECIMAL(!lin,!col));
 "rational" => (col:=yypos-(!eolpos);T.TRATIONAL(!lin,!col));
 "integer" => (col:=yypos-(!eolpos);T.TINTEGER(!lin,!col));
 "boolean" => (col:=yypos-(!eolpos);T.TBOOLEAN(!lin,!col));

@@ -7,11 +7,19 @@ exception TypeError
 exception NotDeclaredError
 exception NotInitializedError  
 exception InputError
+val outs = ref (TextIO.stdOut)
+fun print(s:string)=
+(
+
+
+    (TextIO.output(!outs,s); TextIO.flushOut(!outs))
+)
 fun xtractor(s : DataTypes.id) (x : DataTypes.decls) = 
+
 case x of 
-DataTypes.INT_(s) => SOME (DataTypes.INT_(s))
-| DataTypes.BOOL_(s) => SOME (DataTypes.BOOL_(s))
-| DataTypes.RAT_(s) => SOME(DataTypes.RAT_(s))
+DataTypes.INT_(h) => (if(h=s) then SOME (DataTypes.INT_(s)) else NONE)
+| DataTypes.BOOL_(h) => (if(h=s) then SOME (DataTypes.BOOL_(s)) else NONE)
+| DataTypes.RAT_(h) => (if (h=s) then SOME(DataTypes.RAT_(s)) else NONE)
 | _ => NONE
 fun getdectype(s)([]) = NONE
 |   getdectype(s)(x::xs) = case  xtractor(s)(x) of
@@ -34,7 +42,7 @@ case (!env) of
  | _ => (print("WTF NO\n");raise FoolError)
 fun get_var_symt(env : DataTypes.blockans ref) = 
 case (!env) of
-   DataTypes.blockans(a,b,c,d,e) => e
+   DataTypes.blockans(a,b,c,d,e) => (hd(!e))
  | _ => (print("WTF NO\n");raise FoolError)
 
 fun parent(env : DataTypes.blockans ref) =
@@ -50,7 +58,7 @@ in
   case search_result of
      NONE => (
       case parent(env) of 
-      ref(DataTypes.Empty) =>(print("Variable \""^i^"\" hasn't been declared in any appropriate scope");raise NotDeclaredError)
+      ref(DataTypes.Empty) =>(print("Variable \""^i^"\" hasn't been declared in any appropriate scope\n");raise NotDeclaredError)
      | _ => search_id(i,parent(env))
      )
 
@@ -64,7 +72,7 @@ in
 case search_result of 
      NONE => (
       case parent(env) of 
-      ref(DataTypes.Empty) =>(print("Procedure \""^i^"\" hasn't been declared in any appropriate scope");raise NotDeclaredError)
+      ref(DataTypes.Empty) =>(print("Procedure \""^i^"\" hasn't been declared in any appropriate scope\n");raise NotDeclaredError)
      | _ => search_procid(i,parent(env))
      )
     | _ => (env)
@@ -88,11 +96,7 @@ case E of
 
 | DataTypes.reference(id) => (
    let
-     val symt = !( (let val bt = (!env) in
-      case bt of DataTypes.blockans(a,b,c,d,e) => e 
-    | _ =>  ref(let val ht : (string, DataTypes.sym option) HashTable.hash_table = HashTable.mkTable(HashString.hashString, op=)(17, Domain)
-in ht end)
-      end))
+    val symt = !(get_var_symt(env))
      val obtained = HashTable.find (symt) (id)
    in
 
@@ -261,6 +265,11 @@ case (eval_expr(P,env),eval_expr(Q,env)) of
 | (DataTypes.BOOLs p, DataTypes.BOOLs q) => (print("Can't check for => for BOOLEAN Types\n");raise TypeError)
 | _ => (print("Can't check for non-equality/equality between non equal types");raise TypeError)
 )
+|   DataTypes.makerat(P,Q) => (
+  case (eval_expr(P,env),eval_expr(Q,env)) of
+(DataTypes.INTs p, DataTypes.INTs q) => DataTypes.RATs(valOf(Rational.make_rat(p,q)))
+| _ => (print("TypeError, Both arguments to make_rat should be of type int and int");raise TypeError)
+)
 |   DataTypes.inte(X) => (DataTypes.INTs X)
 |   DataTypes.rate(X) => (DataTypes.RATs X)
 |   DataTypes.boole(X) =>(DataTypes.BOOLs X)
@@ -321,7 +330,7 @@ end
    )
    val cmdseq = get_cmdseq(scope_toexecute)
  in
-   execute_multi(cmdseq, scope_toexecute)
+   (DataTypes.pusher(scope_toexecute);execute_multi(cmdseq, scope_toexecute);DataTypes.popper(scope_toexecute))
  end
  )
  | DataTypes.ReadCmd(id) => (
@@ -351,9 +360,10 @@ let
   val inputLine = valOf(TextIO.inputLine TextIO.stdIn)
   val num = String.substring(inputLine,0,size(inputLine)-1)
   val symentryexp = (case num of
-  "tt" => DataTypes.boole(true) 
-  | "ff" => DataTypes.boole(false) 
+  "tt" => (DataTypes.boole(true) )
+  | "ff" => (DataTypes.boole(false) )
   | _ => (print("Enter the boolean value in the correct format");raise InputError)
+
   )
   val command = DataTypes.AssignmentCmd(id,symentryexp)
 in
@@ -387,7 +397,7 @@ sig
     exception PiError;
     val compile : string -> DataTypes.blockans;
     val dummy : string -> DataTypes.sym;
-    val interpret : string -> unit;
+    val interpret : string*string -> unit; 
   (* val walk : DataTypes.blockans -> unit
   val interpret : string -> unit*)
 end;
@@ -433,7 +443,7 @@ fun dummy(filename) =
     in
       Interpreter.eval_expr(command,env) 
     end
-fun interpret(filename) = 
+fun interpret(filename,ofilename) = 
 let
   val compiled = compile filename
   val env = ref compiled
@@ -442,7 +452,9 @@ let
     DataTypes.blockans(a,b,c,d,e) => b
     | DataTypes.Empty => []
   )
+  val stream = TextIO.openOut(ofilename)
 in
-  Interpreter.execute_multi(cmds,env)
-end
+( Interpreter.outs := stream;Interpreter.execute_multi(cmds,env);TextIO.closeOut(stream))
+
+end 
 end;

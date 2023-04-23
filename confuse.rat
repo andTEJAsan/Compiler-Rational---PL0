@@ -1,0 +1,27 @@
+boolean ACalledTwice;
+procedure first
+    integer a;
+    procedure second
+    {
+        a := a + 10;
+    };
+{
+    a:= 0;
+    if(! ACalledTwice) then
+    {
+        ACalledTwice := tt;
+        call first;
+    }
+    else
+    {
+        call second;
+    }
+    fi;
+
+    print(a);
+};
+{
+
+    ACalledTwice := ff;
+    call first;
+}

@@ -14,7 +14,7 @@ state 0:
 	TLBRACE	reduce by rule 3
 	TPROCEDURE	reduce by rule 9
 
-	program	goto 117
+	program	goto 127
 	block	goto 4
 	declseq	goto 3
 	vardecls	goto 2
@@ -319,14 +319,16 @@ state 28:
 
 	whilecmd : TWHILE . expression TDO commandseq TOD 
 
-	TIDEN	shift 50
-	TLPAREN	shift 49
-	TNEG	shift 48
-	TINV	shift 47
-	TNOT	shift 46
-	TRATNUM	shift 45
-	TBOOLNUM	shift 44
-	TINTNUM	shift 43
+	TIDEN	shift 52
+	TLPAREN	shift 51
+	TNEG	shift 50
+	TINV	shift 49
+	TNOT	shift 48
+	TRATNUM	shift 47
+	TBOOLNUM	shift 46
+	TINTNUM	shift 45
+	TMAKERAT	shift 44
+	TFROMDECIMAL	shift 43
 
 	expression	goto 42
 
@@ -337,16 +339,18 @@ state 29:
 
 	conditionalcmd : TIF . expression TTHEN commandseq TELSE commandseq TFI 
 
-	TIDEN	shift 50
-	TLPAREN	shift 49
-	TNEG	shift 48
-	TINV	shift 47
-	TNOT	shift 46
-	TRATNUM	shift 45
-	TBOOLNUM	shift 44
-	TINTNUM	shift 43
+	TIDEN	shift 52
+	TLPAREN	shift 51
+	TNEG	shift 50
+	TINV	shift 49
+	TNOT	shift 48
+	TRATNUM	shift 47
+	TBOOLNUM	shift 46
+	TINTNUM	shift 45
+	TMAKERAT	shift 44
+	TFROMDECIMAL	shift 43
 
-	expression	goto 51
+	expression	goto 53
 
 	.	error
 
@@ -355,7 +359,7 @@ state 30:
 
 	printcmd : TPRINT . TLPAREN expression TRPAREN 
 
-	TLPAREN	shift 52
+	TLPAREN	shift 54
 
 
 	.	error
@@ -374,7 +378,7 @@ state 32:
 
 	assignmentcmd : TIDEN . TASSIGN expression 
 
-	TASSIGN	shift 53
+	TASSIGN	shift 55
 
 
 	.	error
@@ -384,7 +388,7 @@ state 33:
 
 	ratvardecls : TRATIONAL TIDEN rep . TSEMI 
 
-	TSEMI	shift 54
+	TSEMI	shift 56
 
 
 	.	error
@@ -394,7 +398,7 @@ state 34:
 
 	rep : TCOMMA . TIDEN rep 
 
-	TIDEN	shift 55
+	TIDEN	shift 57
 
 
 	.	error
@@ -406,7 +410,7 @@ state 35:
 
 	TCOMMA	shift 34
 
-	rep	goto 56
+	rep	goto 58
 
 	.	reduce by rule 15
 
@@ -415,7 +419,7 @@ state 36:
 
 	intvardecls : TINTEGER TIDEN rep . TSEMI 
 
-	TSEMI	shift 57
+	TSEMI	shift 59
 
 
 	.	error
@@ -456,8 +460,8 @@ state 39:
 	callcmd	goto 22
 	whilecmd	goto 21
 	conditionalcmd	goto 20
-	command	goto 59
-	res	goto 58
+	command	goto 61
+	res	goto 60
 
 	.	reduce by rule 19
 
@@ -475,7 +479,7 @@ state 41:
 
 	readcmd : TREAD TLPAREN . TIDEN TRPAREN 
 
-	TIDEN	shift 60
+	TIDEN	shift 62
 
 
 	.	error
@@ -502,30 +506,50 @@ state 42:
 	expression : expression . TGE expression 
 	whilecmd : TWHILE expression . TDO commandseq TOD 
 
-	TRATADD	shift 78
-	TRATSUB	shift 77
-	TRATMUL	shift 76
-	TRATDIV	shift 75
-	TADD	shift 74
-	TSUB	shift 73
-	TMUL	shift 72
-	TDIV	shift 71
-	TMOD	shift 70
-	TAND	shift 69
-	TOR	shift 68
-	TEQ	shift 67
-	TNE	shift 66
-	TLT	shift 65
-	TLE	shift 64
-	TGT	shift 63
-	TGE	shift 62
-	TDO	shift 61
+	TRATADD	shift 80
+	TRATSUB	shift 79
+	TRATMUL	shift 78
+	TRATDIV	shift 77
+	TADD	shift 76
+	TSUB	shift 75
+	TMUL	shift 74
+	TDIV	shift 73
+	TMOD	shift 72
+	TAND	shift 71
+	TOR	shift 70
+	TEQ	shift 69
+	TNE	shift 68
+	TLT	shift 67
+	TLE	shift 66
+	TGT	shift 65
+	TGE	shift 64
+	TDO	shift 63
 
 
 	.	error
 
 
 state 43:
+
+	expression : TFROMDECIMAL . TLPAREN TRATNUM TRPAREN 
+
+	TLPAREN	shift 81
+
+
+	.	error
+
+
+state 44:
+
+	expression : TMAKERAT . TLPAREN expression TCOMMA expression TRPAREN 
+
+	TLPAREN	shift 82
+
+
+	.	error
+
+
+state 45:
 
 	expression : TINTNUM .  (reduce by rule 56)
 
@@ -534,7 +558,7 @@ state 43:
 	.	reduce by rule 56
 
 
-state 44:
+state 46:
 
 	expression : TBOOLNUM .  (reduce by rule 55)
 
@@ -543,7 +567,7 @@ state 44:
 	.	reduce by rule 55
 
 
-state 45:
+state 47:
 
 	expression : TRATNUM .  (reduce by rule 54)
 
@@ -552,79 +576,87 @@ state 45:
 	.	reduce by rule 54
 
 
-state 46:
+state 48:
 
 	expression : TNOT . expression 
 
-	TIDEN	shift 50
-	TLPAREN	shift 49
-	TNEG	shift 48
-	TINV	shift 47
-	TNOT	shift 46
-	TRATNUM	shift 45
-	TBOOLNUM	shift 44
-	TINTNUM	shift 43
+	TIDEN	shift 52
+	TLPAREN	shift 51
+	TNEG	shift 50
+	TINV	shift 49
+	TNOT	shift 48
+	TRATNUM	shift 47
+	TBOOLNUM	shift 46
+	TINTNUM	shift 45
+	TMAKERAT	shift 44
+	TFROMDECIMAL	shift 43
 
-	expression	goto 79
-
-	.	error
-
-
-state 47:
-
-	expression : TINV . expression 
-
-	TIDEN	shift 50
-	TLPAREN	shift 49
-	TNEG	shift 48
-	TINV	shift 47
-	TNOT	shift 46
-	TRATNUM	shift 45
-	TBOOLNUM	shift 44
-	TINTNUM	shift 43
-
-	expression	goto 80
-
-	.	error
-
-
-state 48:
-
-	expression : TNEG . expression 
-
-	TIDEN	shift 50
-	TLPAREN	shift 49
-	TNEG	shift 48
-	TINV	shift 47
-	TNOT	shift 46
-	TRATNUM	shift 45
-	TBOOLNUM	shift 44
-	TINTNUM	shift 43
-
-	expression	goto 81
+	expression	goto 83
 
 	.	error
 
 
 state 49:
 
-	expression : TLPAREN . expression TRPAREN 
+	expression : TINV . expression 
 
-	TIDEN	shift 50
-	TLPAREN	shift 49
-	TNEG	shift 48
-	TINV	shift 47
-	TNOT	shift 46
-	TRATNUM	shift 45
-	TBOOLNUM	shift 44
-	TINTNUM	shift 43
+	TIDEN	shift 52
+	TLPAREN	shift 51
+	TNEG	shift 50
+	TINV	shift 49
+	TNOT	shift 48
+	TRATNUM	shift 47
+	TBOOLNUM	shift 46
+	TINTNUM	shift 45
+	TMAKERAT	shift 44
+	TFROMDECIMAL	shift 43
 
-	expression	goto 82
+	expression	goto 84
 
 	.	error
 
 
 state 50:
+
+	expression : TNEG . expression 
+
+	TIDEN	shift 52
+	TLPAREN	shift 51
+	TNEG	shift 50
+	TINV	shift 49
+	TNOT	shift 48
+	TRATNUM	shift 47
+	TBOOLNUM	shift 46
+	TINTNUM	shift 45
+	TMAKERAT	shift 44
+	TFROMDECIMAL	shift 43
+
+	expression	goto 85
+
+	.	error
+
+
+state 51:
+
+	expression : TLPAREN . expression TRPAREN 
+
+	TIDEN	shift 52
+	TLPAREN	shift 51
+	TNEG	shift 50
+	TINV	shift 49
+	TNOT	shift 48
+	TRATNUM	shift 47
+	TBOOLNUM	shift 46
+	TINTNUM	shift 45
+	TMAKERAT	shift 44
+	TFROMDECIMAL	shift 43
+
+	expression	goto 86
+
+	.	error
+
+
+state 52:
 
 	expression : TIDEN .  (reduce by rule 35)
 
@@ -633,7 +665,7 @@ state 50:
 	.	reduce by rule 35
 
 
-state 51:
+state 53:
 
 	expression : expression . TRATADD expression 
 	expression : expression . TRATSUB expression 
@@ -654,66 +686,70 @@ state 51:
 	expression : expression . TGE expression 
 	conditionalcmd : TIF expression . TTHEN commandseq TELSE commandseq TFI 
 
-	TRATADD	shift 78
-	TRATSUB	shift 77
-	TRATMUL	shift 76
-	TRATDIV	shift 75
-	TADD	shift 74
-	TSUB	shift 73
-	TMUL	shift 72
-	TDIV	shift 71
-	TMOD	shift 70
-	TAND	shift 69
-	TOR	shift 68
-	TEQ	shift 67
-	TNE	shift 66
-	TLT	shift 65
-	TLE	shift 64
-	TGT	shift 63
-	TGE	shift 62
-	TTHEN	shift 83
+	TRATADD	shift 80
+	TRATSUB	shift 79
+	TRATMUL	shift 78
+	TRATDIV	shift 77
+	TADD	shift 76
+	TSUB	shift 75
+	TMUL	shift 74
+	TDIV	shift 73
+	TMOD	shift 72
+	TAND	shift 71
+	TOR	shift 70
+	TEQ	shift 69
+	TNE	shift 68
+	TLT	shift 67
+	TLE	shift 66
+	TGT	shift 65
+	TGE	shift 64
+	TTHEN	shift 87
 
-
-	.	error
-
-
-state 52:
-
-	printcmd : TPRINT TLPAREN . expression TRPAREN 
-
-	TIDEN	shift 50
-	TLPAREN	shift 49
-	TNEG	shift 48
-	TINV	shift 47
-	TNOT	shift 46
-	TRATNUM	shift 45
-	TBOOLNUM	shift 44
-	TINTNUM	shift 43
-
-	expression	goto 84
-
-	.	error
-
-
-state 53:
-
-	assignmentcmd : TIDEN TASSIGN . expression 
-
-	TIDEN	shift 50
-	TLPAREN	shift 49
-	TNEG	shift 48
-	TINV	shift 47
-	TNOT	shift 46
-	TRATNUM	shift 45
-	TBOOLNUM	shift 44
-	TINTNUM	shift 43
-
-	expression	goto 85
 
 	.	error
 
 
 state 54:
+
+	printcmd : TPRINT TLPAREN . expression TRPAREN 
+
+	TIDEN	shift 52
+	TLPAREN	shift 51
+	TNEG	shift 50
+	TINV	shift 49
+	TNOT	shift 48
+	TRATNUM	shift 47
+	TBOOLNUM	shift 46
+	TINTNUM	shift 45
+	TMAKERAT	shift 44
+	TFROMDECIMAL	shift 43
+
+	expression	goto 88
+
+	.	error
+
+
+state 55:
+
+	assignmentcmd : TIDEN TASSIGN . expression 
+
+	TIDEN	shift 52
+	TLPAREN	shift 51
+	TNEG	shift 50
+	TINV	shift 49
+	TNOT	shift 48
+	TRATNUM	shift 47
+	TBOOLNUM	shift 46
+	TINTNUM	shift 45
+	TMAKERAT	shift 44
+	TFROMDECIMAL	shift 43
+
+	expression	goto 89
+
+	.	error
+
+
+state 56:
 
 	ratvardecls : TRATIONAL TIDEN rep TSEMI .  (reduce by rule 8)
 
@@ -722,28 +758,28 @@ state 54:
 	.	reduce by rule 8
 
 
-state 55:
+state 57:
 
 	rep : TCOMMA TIDEN . rep 
 
 	TCOMMA	shift 34
 
-	rep	goto 86
+	rep	goto 90
 
 	.	reduce by rule 15
 
 
-state 56:
+state 58:
 
 	boolvardecls : TBOOLEAN TIDEN rep . TSEMI 
 
-	TSEMI	shift 87
+	TSEMI	shift 91
 
 
 	.	error
 
 
-state 57:
+state 59:
 
 	intvardecls : TINTEGER TIDEN rep TSEMI .  (reduce by rule 10)
 
@@ -752,31 +788,11 @@ state 57:
 	.	reduce by rule 10
 
 
-state 58:
+state 60:
 
 	commandseq : TLBRACE command TSEMI res . TRBRACE 
 
-	TRBRACE	shift 88
-
-
-	.	error
-
-
-state 59:
-
-	res : command . TSEMI res 
-
-	TSEMI	shift 89
-
-
-	.	error
-
-
-state 60:
-
-	readcmd : TREAD TLPAREN TIDEN . TRPAREN 
-
-	TRPAREN	shift 90
+	TRBRACE	shift 92
 
 
 	.	error
@@ -784,322 +800,406 @@ state 60:
 
 state 61:
 
-	whilecmd : TWHILE expression TDO . commandseq TOD 
+	res : command . TSEMI res 
 
-	TLBRACE	shift 12
+	TSEMI	shift 93
 
-	commandseq	goto 91
 
 	.	error
 
 
 state 62:
 
-	expression : expression TGE . expression 
+	readcmd : TREAD TLPAREN TIDEN . TRPAREN 
 
-	TIDEN	shift 50
-	TLPAREN	shift 49
-	TNEG	shift 48
-	TINV	shift 47
-	TNOT	shift 46
-	TRATNUM	shift 45
-	TBOOLNUM	shift 44
-	TINTNUM	shift 43
+	TRPAREN	shift 94
 
-	expression	goto 92
 
 	.	error
 
 
 state 63:
 
-	expression : expression TGT . expression 
+	whilecmd : TWHILE expression TDO . commandseq TOD 
 
-	TIDEN	shift 50
-	TLPAREN	shift 49
-	TNEG	shift 48
-	TINV	shift 47
-	TNOT	shift 46
-	TRATNUM	shift 45
-	TBOOLNUM	shift 44
-	TINTNUM	shift 43
+	TLBRACE	shift 12
 
-	expression	goto 93
+	commandseq	goto 95
 
 	.	error
 
 
 state 64:
 
-	expression : expression TLE . expression 
+	expression : expression TGE . expression 
 
-	TIDEN	shift 50
-	TLPAREN	shift 49
-	TNEG	shift 48
-	TINV	shift 47
-	TNOT	shift 46
-	TRATNUM	shift 45
-	TBOOLNUM	shift 44
-	TINTNUM	shift 43
-
-	expression	goto 94
-
-	.	error
-
-
-state 65:
-
-	expression : expression TLT . expression 
-
-	TIDEN	shift 50
-	TLPAREN	shift 49
-	TNEG	shift 48
-	TINV	shift 47
-	TNOT	shift 46
-	TRATNUM	shift 45
-	TBOOLNUM	shift 44
-	TINTNUM	shift 43
-
-	expression	goto 95
-
-	.	error
-
-
-state 66:
-
-	expression : expression TNE . expression 
-
-	TIDEN	shift 50
-	TLPAREN	shift 49
-	TNEG	shift 48
-	TINV	shift 47
-	TNOT	shift 46
-	TRATNUM	shift 45
-	TBOOLNUM	shift 44
-	TINTNUM	shift 43
+	TIDEN	shift 52
+	TLPAREN	shift 51
+	TNEG	shift 50
+	TINV	shift 49
+	TNOT	shift 48
+	TRATNUM	shift 47
+	TBOOLNUM	shift 46
+	TINTNUM	shift 45
+	TMAKERAT	shift 44
+	TFROMDECIMAL	shift 43
 
 	expression	goto 96
 
 	.	error
 
 
-state 67:
+state 65:
 
-	expression : expression TEQ . expression 
+	expression : expression TGT . expression 
 
-	TIDEN	shift 50
-	TLPAREN	shift 49
-	TNEG	shift 48
-	TINV	shift 47
-	TNOT	shift 46
-	TRATNUM	shift 45
-	TBOOLNUM	shift 44
-	TINTNUM	shift 43
+	TIDEN	shift 52
+	TLPAREN	shift 51
+	TNEG	shift 50
+	TINV	shift 49
+	TNOT	shift 48
+	TRATNUM	shift 47
+	TBOOLNUM	shift 46
+	TINTNUM	shift 45
+	TMAKERAT	shift 44
+	TFROMDECIMAL	shift 43
 
 	expression	goto 97
 
 	.	error
 
 
-state 68:
+state 66:
 
-	expression : expression TOR . expression 
+	expression : expression TLE . expression 
 
-	TIDEN	shift 50
-	TLPAREN	shift 49
-	TNEG	shift 48
-	TINV	shift 47
-	TNOT	shift 46
-	TRATNUM	shift 45
-	TBOOLNUM	shift 44
-	TINTNUM	shift 43
+	TIDEN	shift 52
+	TLPAREN	shift 51
+	TNEG	shift 50
+	TINV	shift 49
+	TNOT	shift 48
+	TRATNUM	shift 47
+	TBOOLNUM	shift 46
+	TINTNUM	shift 45
+	TMAKERAT	shift 44
+	TFROMDECIMAL	shift 43
 
 	expression	goto 98
 
 	.	error
 
 
-state 69:
+state 67:
 
-	expression : expression TAND . expression 
+	expression : expression TLT . expression 
 
-	TIDEN	shift 50
-	TLPAREN	shift 49
-	TNEG	shift 48
-	TINV	shift 47
-	TNOT	shift 46
-	TRATNUM	shift 45
-	TBOOLNUM	shift 44
-	TINTNUM	shift 43
+	TIDEN	shift 52
+	TLPAREN	shift 51
+	TNEG	shift 50
+	TINV	shift 49
+	TNOT	shift 48
+	TRATNUM	shift 47
+	TBOOLNUM	shift 46
+	TINTNUM	shift 45
+	TMAKERAT	shift 44
+	TFROMDECIMAL	shift 43
 
 	expression	goto 99
 
 	.	error
 
 
-state 70:
+state 68:
 
-	expression : expression TMOD . expression 
+	expression : expression TNE . expression 
 
-	TIDEN	shift 50
-	TLPAREN	shift 49
-	TNEG	shift 48
-	TINV	shift 47
-	TNOT	shift 46
-	TRATNUM	shift 45
-	TBOOLNUM	shift 44
-	TINTNUM	shift 43
+	TIDEN	shift 52
+	TLPAREN	shift 51
+	TNEG	shift 50
+	TINV	shift 49
+	TNOT	shift 48
+	TRATNUM	shift 47
+	TBOOLNUM	shift 46
+	TINTNUM	shift 45
+	TMAKERAT	shift 44
+	TFROMDECIMAL	shift 43
 
 	expression	goto 100
 
 	.	error
 
 
-state 71:
+state 69:
 
-	expression : expression TDIV . expression 
+	expression : expression TEQ . expression 
 
-	TIDEN	shift 50
-	TLPAREN	shift 49
-	TNEG	shift 48
-	TINV	shift 47
-	TNOT	shift 46
-	TRATNUM	shift 45
-	TBOOLNUM	shift 44
-	TINTNUM	shift 43
+	TIDEN	shift 52
+	TLPAREN	shift 51
+	TNEG	shift 50
+	TINV	shift 49
+	TNOT	shift 48
+	TRATNUM	shift 47
+	TBOOLNUM	shift 46
+	TINTNUM	shift 45
+	TMAKERAT	shift 44
+	TFROMDECIMAL	shift 43
 
 	expression	goto 101
 
 	.	error
 
 
-state 72:
+state 70:
 
-	expression : expression TMUL . expression 
+	expression : expression TOR . expression 
 
-	TIDEN	shift 50
-	TLPAREN	shift 49
-	TNEG	shift 48
-	TINV	shift 47
-	TNOT	shift 46
-	TRATNUM	shift 45
-	TBOOLNUM	shift 44
-	TINTNUM	shift 43
+	TIDEN	shift 52
+	TLPAREN	shift 51
+	TNEG	shift 50
+	TINV	shift 49
+	TNOT	shift 48
+	TRATNUM	shift 47
+	TBOOLNUM	shift 46
+	TINTNUM	shift 45
+	TMAKERAT	shift 44
+	TFROMDECIMAL	shift 43
 
 	expression	goto 102
 
 	.	error
 
 
-state 73:
+state 71:
 
-	expression : expression TSUB . expression 
+	expression : expression TAND . expression 
 
-	TIDEN	shift 50
-	TLPAREN	shift 49
-	TNEG	shift 48
-	TINV	shift 47
-	TNOT	shift 46
-	TRATNUM	shift 45
-	TBOOLNUM	shift 44
-	TINTNUM	shift 43
+	TIDEN	shift 52
+	TLPAREN	shift 51
+	TNEG	shift 50
+	TINV	shift 49
+	TNOT	shift 48
+	TRATNUM	shift 47
+	TBOOLNUM	shift 46
+	TINTNUM	shift 45
+	TMAKERAT	shift 44
+	TFROMDECIMAL	shift 43
 
 	expression	goto 103
 
 	.	error
 
 
-state 74:
+state 72:
 
-	expression : expression TADD . expression 
+	expression : expression TMOD . expression 
 
-	TIDEN	shift 50
-	TLPAREN	shift 49
-	TNEG	shift 48
-	TINV	shift 47
-	TNOT	shift 46
-	TRATNUM	shift 45
-	TBOOLNUM	shift 44
-	TINTNUM	shift 43
+	TIDEN	shift 52
+	TLPAREN	shift 51
+	TNEG	shift 50
+	TINV	shift 49
+	TNOT	shift 48
+	TRATNUM	shift 47
+	TBOOLNUM	shift 46
+	TINTNUM	shift 45
+	TMAKERAT	shift 44
+	TFROMDECIMAL	shift 43
 
 	expression	goto 104
 
 	.	error
 
 
-state 75:
+state 73:
 
-	expression : expression TRATDIV . expression 
+	expression : expression TDIV . expression 
 
-	TIDEN	shift 50
-	TLPAREN	shift 49
-	TNEG	shift 48
-	TINV	shift 47
-	TNOT	shift 46
-	TRATNUM	shift 45
-	TBOOLNUM	shift 44
-	TINTNUM	shift 43
+	TIDEN	shift 52
+	TLPAREN	shift 51
+	TNEG	shift 50
+	TINV	shift 49
+	TNOT	shift 48
+	TRATNUM	shift 47
+	TBOOLNUM	shift 46
+	TINTNUM	shift 45
+	TMAKERAT	shift 44
+	TFROMDECIMAL	shift 43
 
 	expression	goto 105
 
 	.	error
 
 
-state 76:
+state 74:
 
-	expression : expression TRATMUL . expression 
+	expression : expression TMUL . expression 
 
-	TIDEN	shift 50
-	TLPAREN	shift 49
-	TNEG	shift 48
-	TINV	shift 47
-	TNOT	shift 46
-	TRATNUM	shift 45
-	TBOOLNUM	shift 44
-	TINTNUM	shift 43
+	TIDEN	shift 52
+	TLPAREN	shift 51
+	TNEG	shift 50
+	TINV	shift 49
+	TNOT	shift 48
+	TRATNUM	shift 47
+	TBOOLNUM	shift 46
+	TINTNUM	shift 45
+	TMAKERAT	shift 44
+	TFROMDECIMAL	shift 43
 
 	expression	goto 106
 
 	.	error
 
 
-state 77:
+state 75:
 
-	expression : expression TRATSUB . expression 
+	expression : expression TSUB . expression 
 
-	TIDEN	shift 50
-	TLPAREN	shift 49
-	TNEG	shift 48
-	TINV	shift 47
-	TNOT	shift 46
-	TRATNUM	shift 45
-	TBOOLNUM	shift 44
-	TINTNUM	shift 43
+	TIDEN	shift 52
+	TLPAREN	shift 51
+	TNEG	shift 50
+	TINV	shift 49
+	TNOT	shift 48
+	TRATNUM	shift 47
+	TBOOLNUM	shift 46
+	TINTNUM	shift 45
+	TMAKERAT	shift 44
+	TFROMDECIMAL	shift 43
 
 	expression	goto 107
 
 	.	error
 
 
-state 78:
+state 76:
 
-	expression : expression TRATADD . expression 
+	expression : expression TADD . expression 
 
-	TIDEN	shift 50
-	TLPAREN	shift 49
-	TNEG	shift 48
-	TINV	shift 47
-	TNOT	shift 46
-	TRATNUM	shift 45
-	TBOOLNUM	shift 44
-	TINTNUM	shift 43
+	TIDEN	shift 52
+	TLPAREN	shift 51
+	TNEG	shift 50
+	TINV	shift 49
+	TNOT	shift 48
+	TRATNUM	shift 47
+	TBOOLNUM	shift 46
+	TINTNUM	shift 45
+	TMAKERAT	shift 44
+	TFROMDECIMAL	shift 43
 
 	expression	goto 108
 
 	.	error
 
 
+state 77:
+
+	expression : expression TRATDIV . expression 
+
+	TIDEN	shift 52
+	TLPAREN	shift 51
+	TNEG	shift 50
+	TINV	shift 49
+	TNOT	shift 48
+	TRATNUM	shift 47
+	TBOOLNUM	shift 46
+	TINTNUM	shift 45
+	TMAKERAT	shift 44
+	TFROMDECIMAL	shift 43
+
+	expression	goto 109
+
+	.	error
+
+
+state 78:
+
+	expression : expression TRATMUL . expression 
+
+	TIDEN	shift 52
+	TLPAREN	shift 51
+	TNEG	shift 50
+	TINV	shift 49
+	TNOT	shift 48
+	TRATNUM	shift 47
+	TBOOLNUM	shift 46
+	TINTNUM	shift 45
+	TMAKERAT	shift 44
+	TFROMDECIMAL	shift 43
+
+	expression	goto 110
+
+	.	error
+
+
 state 79:
+
+	expression : expression TRATSUB . expression 
+
+	TIDEN	shift 52
+	TLPAREN	shift 51
+	TNEG	shift 50
+	TINV	shift 49
+	TNOT	shift 48
+	TRATNUM	shift 47
+	TBOOLNUM	shift 46
+	TINTNUM	shift 45
+	TMAKERAT	shift 44
+	TFROMDECIMAL	shift 43
+
+	expression	goto 111
+
+	.	error
+
+
+state 80:
+
+	expression : expression TRATADD . expression 
+
+	TIDEN	shift 52
+	TLPAREN	shift 51
+	TNEG	shift 50
+	TINV	shift 49
+	TNOT	shift 48
+	TRATNUM	shift 47
+	TBOOLNUM	shift 46
+	TINTNUM	shift 45
+	TMAKERAT	shift 44
+	TFROMDECIMAL	shift 43
+
+	expression	goto 112
+
+	.	error
+
+
+state 81:
+
+	expression : TFROMDECIMAL TLPAREN . TRATNUM TRPAREN 
+
+	TRATNUM	shift 113
+
+
+	.	error
+
+
+state 82:
+
+	expression : TMAKERAT TLPAREN . expression TCOMMA expression TRPAREN 
+
+	TIDEN	shift 52
+	TLPAREN	shift 51
+	TNEG	shift 50
+	TINV	shift 49
+	TNOT	shift 48
+	TRATNUM	shift 47
+	TBOOLNUM	shift 46
+	TINTNUM	shift 45
+	TMAKERAT	shift 44
+	TFROMDECIMAL	shift 43
+
+	expression	goto 114
+
+	.	error
+
+
+state 83:
 
 	expression : TNOT expression .  (reduce by rule 34)
 	expression : expression . TRATADD expression 
@@ -1125,7 +1225,7 @@ state 79:
 	.	reduce by rule 34
 
 
-state 80:
+state 84:
 
 	expression : TINV expression .  (reduce by rule 33)
 	expression : expression . TRATADD expression 
@@ -1151,7 +1251,7 @@ state 80:
 	.	reduce by rule 33
 
 
-state 81:
+state 85:
 
 	expression : TNEG expression .  (reduce by rule 32)
 	expression : expression . TRATADD expression 
@@ -1177,7 +1277,7 @@ state 81:
 	.	reduce by rule 32
 
 
-state 82:
+state 86:
 
 	expression : expression . TRATADD expression 
 	expression : expression . TRATSUB expression 
@@ -1198,41 +1298,41 @@ state 82:
 	expression : expression . TGE expression 
 	expression : TLPAREN expression . TRPAREN 
 
-	TRPAREN	shift 109
-	TRATADD	shift 78
-	TRATSUB	shift 77
-	TRATMUL	shift 76
-	TRATDIV	shift 75
-	TADD	shift 74
-	TSUB	shift 73
-	TMUL	shift 72
-	TDIV	shift 71
-	TMOD	shift 70
-	TAND	shift 69
-	TOR	shift 68
-	TEQ	shift 67
-	TNE	shift 66
-	TLT	shift 65
-	TLE	shift 64
-	TGT	shift 63
-	TGE	shift 62
+	TRPAREN	shift 115
+	TRATADD	shift 80
+	TRATSUB	shift 79
+	TRATMUL	shift 78
+	TRATDIV	shift 77
+	TADD	shift 76
+	TSUB	shift 75
+	TMUL	shift 74
+	TDIV	shift 73
+	TMOD	shift 72
+	TAND	shift 71
+	TOR	shift 70
+	TEQ	shift 69
+	TNE	shift 68
+	TLT	shift 67
+	TLE	shift 66
+	TGT	shift 65
+	TGE	shift 64
 
 
 	.	error
 
 
-state 83:
+state 87:
 
 	conditionalcmd : TIF expression TTHEN . commandseq TELSE commandseq TFI 
 
 	TLBRACE	shift 12
 
-	commandseq	goto 110
+	commandseq	goto 116
 
 	.	error
 
 
-state 84:
+state 88:
 
 	expression : expression . TRATADD expression 
 	expression : expression . TRATSUB expression 
@@ -1253,30 +1353,30 @@ state 84:
 	expression : expression . TGE expression 
 	printcmd : TPRINT TLPAREN expression . TRPAREN 
 
-	TRPAREN	shift 111
-	TRATADD	shift 78
-	TRATSUB	shift 77
-	TRATMUL	shift 76
-	TRATDIV	shift 75
-	TADD	shift 74
-	TSUB	shift 73
-	TMUL	shift 72
-	TDIV	shift 71
-	TMOD	shift 70
-	TAND	shift 69
-	TOR	shift 68
-	TEQ	shift 67
-	TNE	shift 66
-	TLT	shift 65
-	TLE	shift 64
-	TGT	shift 63
-	TGE	shift 62
+	TRPAREN	shift 117
+	TRATADD	shift 80
+	TRATSUB	shift 79
+	TRATMUL	shift 78
+	TRATDIV	shift 77
+	TADD	shift 76
+	TSUB	shift 75
+	TMUL	shift 74
+	TDIV	shift 73
+	TMOD	shift 72
+	TAND	shift 71
+	TOR	shift 70
+	TEQ	shift 69
+	TNE	shift 68
+	TLT	shift 67
+	TLE	shift 66
+	TGT	shift 65
+	TGE	shift 64
 
 
 	.	error
 
 
-state 85:
+state 89:
 
 	expression : expression . TRATADD expression 
 	expression : expression . TRATSUB expression 
@@ -1297,29 +1397,29 @@ state 85:
 	expression : expression . TGE expression 
 	assignmentcmd : TIDEN TASSIGN expression .  (reduce by rule 31)
 
-	TRATADD	shift 78
-	TRATSUB	shift 77
-	TRATMUL	shift 76
-	TRATDIV	shift 75
-	TADD	shift 74
-	TSUB	shift 73
-	TMUL	shift 72
-	TDIV	shift 71
-	TMOD	shift 70
-	TAND	shift 69
-	TOR	shift 68
-	TEQ	shift 67
-	TNE	shift 66
-	TLT	shift 65
-	TLE	shift 64
-	TGT	shift 63
-	TGE	shift 62
+	TRATADD	shift 80
+	TRATSUB	shift 79
+	TRATMUL	shift 78
+	TRATDIV	shift 77
+	TADD	shift 76
+	TSUB	shift 75
+	TMUL	shift 74
+	TDIV	shift 73
+	TMOD	shift 72
+	TAND	shift 71
+	TOR	shift 70
+	TEQ	shift 69
+	TNE	shift 68
+	TLT	shift 67
+	TLE	shift 66
+	TGT	shift 65
+	TGE	shift 64
 
 
 	.	reduce by rule 31
 
 
-state 86:
+state 90:
 
 	rep : TCOMMA TIDEN rep .  (reduce by rule 14)
 
@@ -1328,7 +1428,7 @@ state 86:
 	.	reduce by rule 14
 
 
-state 87:
+state 91:
 
 	boolvardecls : TBOOLEAN TIDEN rep TSEMI .  (reduce by rule 12)
 
@@ -1337,7 +1437,7 @@ state 87:
 	.	reduce by rule 12
 
 
-state 88:
+state 92:
 
 	commandseq : TLBRACE command TSEMI res TRBRACE .  (reduce by rule 17)
 
@@ -1346,7 +1446,7 @@ state 88:
 	.	reduce by rule 17
 
 
-state 89:
+state 93:
 
 	res : command TSEMI . res 
 
@@ -1363,13 +1463,13 @@ state 89:
 	callcmd	goto 22
 	whilecmd	goto 21
 	conditionalcmd	goto 20
-	command	goto 59
-	res	goto 112
+	command	goto 61
+	res	goto 118
 
 	.	reduce by rule 19
 
 
-state 90:
+state 94:
 
 	readcmd : TREAD TLPAREN TIDEN TRPAREN .  (reduce by rule 26)
 
@@ -1378,17 +1478,17 @@ state 90:
 	.	reduce by rule 26
 
 
-state 91:
+state 95:
 
 	whilecmd : TWHILE expression TDO commandseq . TOD 
 
-	TOD	shift 113
+	TOD	shift 119
 
 
 	.	error
 
 
-state 92:
+state 96:
 
 	expression : expression . TRATADD expression 
 	expression : expression . TRATSUB expression 
@@ -1414,7 +1514,7 @@ state 92:
 	.	reduce by rule 52
 
 
-state 93:
+state 97:
 
 	expression : expression . TRATADD expression 
 	expression : expression . TRATSUB expression 
@@ -1440,7 +1540,7 @@ state 93:
 	.	reduce by rule 51
 
 
-state 94:
+state 98:
 
 	expression : expression . TRATADD expression 
 	expression : expression . TRATSUB expression 
@@ -1466,7 +1566,7 @@ state 94:
 	.	reduce by rule 50
 
 
-state 95:
+state 99:
 
 	expression : expression . TRATADD expression 
 	expression : expression . TRATSUB expression 
@@ -1492,7 +1592,7 @@ state 95:
 	.	reduce by rule 49
 
 
-state 96:
+state 100:
 
 	expression : expression . TRATADD expression 
 	expression : expression . TRATSUB expression 
@@ -1518,7 +1618,7 @@ state 96:
 	.	reduce by rule 48
 
 
-state 97:
+state 101:
 
 	expression : expression . TRATADD expression 
 	expression : expression . TRATSUB expression 
@@ -1544,7 +1644,7 @@ state 97:
 	.	reduce by rule 47
 
 
-state 98:
+state 102:
 
 	expression : expression . TRATADD expression 
 	expression : expression . TRATSUB expression 
@@ -1565,19 +1665,19 @@ state 98:
 	expression : expression . TGT expression 
 	expression : expression . TGE expression 
 
-	TAND	shift 69
-	TEQ	shift 67
-	TNE	shift 66
-	TLT	shift 65
-	TLE	shift 64
-	TGT	shift 63
-	TGE	shift 62
+	TAND	shift 71
+	TEQ	shift 69
+	TNE	shift 68
+	TLT	shift 67
+	TLE	shift 66
+	TGT	shift 65
+	TGE	shift 64
 
 
 	.	reduce by rule 46
 
 
-state 99:
+state 103:
 
 	expression : expression . TRATADD expression 
 	expression : expression . TRATSUB expression 
@@ -1598,18 +1698,18 @@ state 99:
 	expression : expression . TGT expression 
 	expression : expression . TGE expression 
 
-	TEQ	shift 67
-	TNE	shift 66
-	TLT	shift 65
-	TLE	shift 64
-	TGT	shift 63
-	TGE	shift 62
+	TEQ	shift 69
+	TNE	shift 68
+	TLT	shift 67
+	TLE	shift 66
+	TGT	shift 65
+	TGE	shift 64
 
 
 	.	reduce by rule 45
 
 
-state 100:
+state 104:
 
 	expression : expression . TRATADD expression 
 	expression : expression . TRATSUB expression 
@@ -1630,24 +1730,24 @@ state 100:
 	expression : expression . TGT expression 
 	expression : expression . TGE expression 
 
-	TRATADD	shift 78
-	TRATSUB	shift 77
-	TRATMUL	shift 76
-	TRATDIV	shift 75
-	TAND	shift 69
-	TOR	shift 68
-	TEQ	shift 67
-	TNE	shift 66
-	TLT	shift 65
-	TLE	shift 64
-	TGT	shift 63
-	TGE	shift 62
+	TRATADD	shift 80
+	TRATSUB	shift 79
+	TRATMUL	shift 78
+	TRATDIV	shift 77
+	TAND	shift 71
+	TOR	shift 70
+	TEQ	shift 69
+	TNE	shift 68
+	TLT	shift 67
+	TLE	shift 66
+	TGT	shift 65
+	TGE	shift 64
 
 
 	.	reduce by rule 44
 
 
-state 101:
+state 105:
 
 	expression : expression . TRATADD expression 
 	expression : expression . TRATSUB expression 
@@ -1668,24 +1768,24 @@ state 101:
 	expression : expression . TGT expression 
 	expression : expression . TGE expression 
 
-	TRATADD	shift 78
-	TRATSUB	shift 77
-	TRATMUL	shift 76
-	TRATDIV	shift 75
-	TAND	shift 69
-	TOR	shift 68
-	TEQ	shift 67
-	TNE	shift 66
-	TLT	shift 65
-	TLE	shift 64
-	TGT	shift 63
-	TGE	shift 62
+	TRATADD	shift 80
+	TRATSUB	shift 79
+	TRATMUL	shift 78
+	TRATDIV	shift 77
+	TAND	shift 71
+	TOR	shift 70
+	TEQ	shift 69
+	TNE	shift 68
+	TLT	shift 67
+	TLE	shift 66
+	TGT	shift 65
+	TGE	shift 64
 
 
 	.	reduce by rule 43
 
 
-state 102:
+state 106:
 
 	expression : expression . TRATADD expression 
 	expression : expression . TRATSUB expression 
@@ -1706,24 +1806,24 @@ state 102:
 	expression : expression . TGT expression 
 	expression : expression . TGE expression 
 
-	TRATADD	shift 78
-	TRATSUB	shift 77
-	TRATMUL	shift 76
-	TRATDIV	shift 75
-	TAND	shift 69
-	TOR	shift 68
-	TEQ	shift 67
-	TNE	shift 66
-	TLT	shift 65
-	TLE	shift 64
-	TGT	shift 63
-	TGE	shift 62
+	TRATADD	shift 80
+	TRATSUB	shift 79
+	TRATMUL	shift 78
+	TRATDIV	shift 77
+	TAND	shift 71
+	TOR	shift 70
+	TEQ	shift 69
+	TNE	shift 68
+	TLT	shift 67
+	TLE	shift 66
+	TGT	shift 65
+	TGE	shift 64
 
 
 	.	reduce by rule 42
 
 
-state 103:
+state 107:
 
 	expression : expression . TRATADD expression 
 	expression : expression . TRATSUB expression 
@@ -1744,27 +1844,27 @@ state 103:
 	expression : expression . TGT expression 
 	expression : expression . TGE expression 
 
-	TRATADD	shift 78
-	TRATSUB	shift 77
-	TRATMUL	shift 76
-	TRATDIV	shift 75
-	TMUL	shift 72
-	TDIV	shift 71
-	TMOD	shift 70
-	TAND	shift 69
-	TOR	shift 68
-	TEQ	shift 67
-	TNE	shift 66
-	TLT	shift 65
-	TLE	shift 64
-	TGT	shift 63
-	TGE	shift 62
+	TRATADD	shift 80
+	TRATSUB	shift 79
+	TRATMUL	shift 78
+	TRATDIV	shift 77
+	TMUL	shift 74
+	TDIV	shift 73
+	TMOD	shift 72
+	TAND	shift 71
+	TOR	shift 70
+	TEQ	shift 69
+	TNE	shift 68
+	TLT	shift 67
+	TLE	shift 66
+	TGT	shift 65
+	TGE	shift 64
 
 
 	.	reduce by rule 41
 
 
-state 104:
+state 108:
 
 	expression : expression . TRATADD expression 
 	expression : expression . TRATSUB expression 
@@ -1785,27 +1885,27 @@ state 104:
 	expression : expression . TGT expression 
 	expression : expression . TGE expression 
 
-	TRATADD	shift 78
-	TRATSUB	shift 77
-	TRATMUL	shift 76
-	TRATDIV	shift 75
-	TMUL	shift 72
-	TDIV	shift 71
-	TMOD	shift 70
-	TAND	shift 69
-	TOR	shift 68
-	TEQ	shift 67
-	TNE	shift 66
-	TLT	shift 65
-	TLE	shift 64
-	TGT	shift 63
-	TGE	shift 62
+	TRATADD	shift 80
+	TRATSUB	shift 79
+	TRATMUL	shift 78
+	TRATDIV	shift 77
+	TMUL	shift 74
+	TDIV	shift 73
+	TMOD	shift 72
+	TAND	shift 71
+	TOR	shift 70
+	TEQ	shift 69
+	TNE	shift 68
+	TLT	shift 67
+	TLE	shift 66
+	TGT	shift 65
+	TGE	shift 64
 
 
 	.	reduce by rule 40
 
 
-state 105:
+state 109:
 
 	expression : expression . TRATADD expression 
 	expression : expression . TRATSUB expression 
@@ -1826,20 +1926,20 @@ state 105:
 	expression : expression . TGT expression 
 	expression : expression . TGE expression 
 
-	TAND	shift 69
-	TOR	shift 68
-	TEQ	shift 67
-	TNE	shift 66
-	TLT	shift 65
-	TLE	shift 64
-	TGT	shift 63
-	TGE	shift 62
+	TAND	shift 71
+	TOR	shift 70
+	TEQ	shift 69
+	TNE	shift 68
+	TLT	shift 67
+	TLE	shift 66
+	TGT	shift 65
+	TGE	shift 64
 
 
 	.	reduce by rule 39
 
 
-state 106:
+state 110:
 
 	expression : expression . TRATADD expression 
 	expression : expression . TRATSUB expression 
@@ -1860,20 +1960,20 @@ state 106:
 	expression : expression . TGT expression 
 	expression : expression . TGE expression 
 
-	TAND	shift 69
-	TOR	shift 68
-	TEQ	shift 67
-	TNE	shift 66
-	TLT	shift 65
-	TLE	shift 64
-	TGT	shift 63
-	TGE	shift 62
+	TAND	shift 71
+	TOR	shift 70
+	TEQ	shift 69
+	TNE	shift 68
+	TLT	shift 67
+	TLE	shift 66
+	TGT	shift 65
+	TGE	shift 64
 
 
 	.	reduce by rule 38
 
 
-state 107:
+state 111:
 
 	expression : expression . TRATADD expression 
 	expression : expression . TRATSUB expression 
@@ -1894,22 +1994,22 @@ state 107:
 	expression : expression . TGT expression 
 	expression : expression . TGE expression 
 
-	TRATMUL	shift 76
-	TRATDIV	shift 75
-	TAND	shift 69
-	TOR	shift 68
-	TEQ	shift 67
-	TNE	shift 66
-	TLT	shift 65
-	TLE	shift 64
-	TGT	shift 63
-	TGE	shift 62
+	TRATMUL	shift 78
+	TRATDIV	shift 77
+	TAND	shift 71
+	TOR	shift 70
+	TEQ	shift 69
+	TNE	shift 68
+	TLT	shift 67
+	TLE	shift 66
+	TGT	shift 65
+	TGE	shift 64
 
 
 	.	reduce by rule 37
 
 
-state 108:
+state 112:
 
 	expression : expression . TRATADD expression 
 	expression : expression TRATADD expression .  (reduce by rule 36)
@@ -1930,22 +2030,76 @@ state 108:
 	expression : expression . TGT expression 
 	expression : expression . TGE expression 
 
-	TRATMUL	shift 76
-	TRATDIV	shift 75
-	TAND	shift 69
-	TOR	shift 68
-	TEQ	shift 67
-	TNE	shift 66
-	TLT	shift 65
-	TLE	shift 64
-	TGT	shift 63
-	TGE	shift 62
+	TRATMUL	shift 78
+	TRATDIV	shift 77
+	TAND	shift 71
+	TOR	shift 70
+	TEQ	shift 69
+	TNE	shift 68
+	TLT	shift 67
+	TLE	shift 66
+	TGT	shift 65
+	TGE	shift 64
 
 
 	.	reduce by rule 36
 
 
-state 109:
+state 113:
+
+	expression : TFROMDECIMAL TLPAREN TRATNUM . TRPAREN 
+
+	TRPAREN	shift 120
+
+
+	.	error
+
+
+state 114:
+
+	expression : expression . TRATADD expression 
+	expression : expression . TRATSUB expression 
+	expression : expression . TRATMUL expression 
+	expression : expression . TRATDIV expression 
+	expression : expression . TADD expression 
+	expression : expression . TSUB expression 
+	expression : expression . TMUL expression 
+	expression : expression . TDIV expression 
+	expression : expression . TMOD expression 
+	expression : expression . TAND expression 
+	expression : expression . TOR expression 
+	expression : expression . TEQ expression 
+	expression : expression . TNE expression 
+	expression : expression . TLT expression 
+	expression : expression . TLE expression 
+	expression : expression . TGT expression 
+	expression : expression . TGE expression 
+	expression : TMAKERAT TLPAREN expression . TCOMMA expression TRPAREN 
+
+	TCOMMA	shift 121
+	TRATADD	shift 80
+	TRATSUB	shift 79
+	TRATMUL	shift 78
+	TRATDIV	shift 77
+	TADD	shift 76
+	TSUB	shift 75
+	TMUL	shift 74
+	TDIV	shift 73
+	TMOD	shift 72
+	TAND	shift 71
+	TOR	shift 70
+	TEQ	shift 69
+	TNE	shift 68
+	TLT	shift 67
+	TLE	shift 66
+	TGT	shift 65
+	TGE	shift 64
+
+
+	.	error
+
+
+state 115:
 
 	expression : TLPAREN expression TRPAREN .  (reduce by rule 53)
 
@@ -1954,17 +2108,17 @@ state 109:
 	.	reduce by rule 53
 
 
-state 110:
+state 116:
 
 	conditionalcmd : TIF expression TTHEN commandseq . TELSE commandseq TFI 
 
-	TELSE	shift 114
+	TELSE	shift 122
 
 
 	.	error
 
 
-state 111:
+state 117:
 
 	printcmd : TPRINT TLPAREN expression TRPAREN .  (reduce by rule 30)
 
@@ -1973,7 +2127,7 @@ state 111:
 	.	reduce by rule 30
 
 
-state 112:
+state 118:
 
 	res : command TSEMI res .  (reduce by rule 18)
 
@@ -1982,7 +2136,7 @@ state 112:
 	.	reduce by rule 18
 
 
-state 113:
+state 119:
 
 	whilecmd : TWHILE expression TDO commandseq TOD .  (reduce by rule 28)
 
@@ -1991,28 +2145,110 @@ state 113:
 	.	reduce by rule 28
 
 
-state 114:
+state 120:
+
+	expression : TFROMDECIMAL TLPAREN TRATNUM TRPAREN .  (reduce by rule 58)
+
+
+
+	.	reduce by rule 58
+
+
+state 121:
+
+	expression : TMAKERAT TLPAREN expression TCOMMA . expression TRPAREN 
+
+	TIDEN	shift 52
+	TLPAREN	shift 51
+	TNEG	shift 50
+	TINV	shift 49
+	TNOT	shift 48
+	TRATNUM	shift 47
+	TBOOLNUM	shift 46
+	TINTNUM	shift 45
+	TMAKERAT	shift 44
+	TFROMDECIMAL	shift 43
+
+	expression	goto 123
+
+	.	error
+
+
+state 122:
 
 	conditionalcmd : TIF expression TTHEN commandseq TELSE . commandseq TFI 
 
 	TLBRACE	shift 12
 
-	commandseq	goto 115
+	commandseq	goto 124
 
 	.	error
 
 
-state 115:
+state 123:
+
+	expression : expression . TRATADD expression 
+	expression : expression . TRATSUB expression 
+	expression : expression . TRATMUL expression 
+	expression : expression . TRATDIV expression 
+	expression : expression . TADD expression 
+	expression : expression . TSUB expression 
+	expression : expression . TMUL expression 
+	expression : expression . TDIV expression 
+	expression : expression . TMOD expression 
+	expression : expression . TAND expression 
+	expression : expression . TOR expression 
+	expression : expression . TEQ expression 
+	expression : expression . TNE expression 
+	expression : expression . TLT expression 
+	expression : expression . TLE expression 
+	expression : expression . TGT expression 
+	expression : expression . TGE expression 
+	expression : TMAKERAT TLPAREN expression TCOMMA expression . TRPAREN 
+
+	TRPAREN	shift 125
+	TRATADD	shift 80
+	TRATSUB	shift 79
+	TRATMUL	shift 78
+	TRATDIV	shift 77
+	TADD	shift 76
+	TSUB	shift 75
+	TMUL	shift 74
+	TDIV	shift 73
+	TMOD	shift 72
+	TAND	shift 71
+	TOR	shift 70
+	TEQ	shift 69
+	TNE	shift 68
+	TLT	shift 67
+	TLE	shift 66
+	TGT	shift 65
+	TGE	shift 64
+
+
+	.	error
+
+
+state 124:
 
 	conditionalcmd : TIF expression TTHEN commandseq TELSE commandseq . TFI 
 
-	TFI	shift 116
+	TFI	shift 126
 
 
 	.	error
 
 
-state 116:
+state 125:
+
+	expression : TMAKERAT TLPAREN expression TCOMMA expression TRPAREN .  (reduce by rule 57)
+
+
+
+	.	reduce by rule 57
+
+
+state 126:
 
 	conditionalcmd : TIF expression TTHEN commandseq TELSE commandseq TFI .  (reduce by rule 29)
 
@@ -2021,7 +2257,7 @@ state 116:
 	.	reduce by rule 29
 
 
-state 117:
+state 127:
 
 
 	TEOF	accept
@@ -2029,5 +2265,5 @@ state 117:
 
 	.	error
 
-257 of 585 action table entries left after compaction
-71 goto table entries
+299 of 705 action table entries left after compaction
+73 goto table entries

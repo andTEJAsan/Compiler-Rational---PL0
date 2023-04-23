@@ -18,7 +18,10 @@ fun get_id_from_proc(PROC_(x,y)) = x
 |   get_id_from_proc(_)  = "bogus"
 fun getter(l) = let val shimt = get_emptysym() in initialize_sym(l,shimt);shimt end 
 
-
+fun getterl(l) = ref([getter(l)])
+fun newsym(env : blockans ref) = case (!env) of
+   DataTypes.blockans(((z1,z2,z3),y),b,c,d,e) => getter((z1@z2@z3))
+ | _ => (print("It should never come to this\n");raise DataTypes.InitializationError)
 
 %%
 %name Pi
@@ -66,7 +69,8 @@ fun getter(l) = let val shimt = get_emptysym() in initialize_sym(l,shimt);shimt 
          | TPROCEDURE
          | TREAD
          | TCALL
-
+         | TMAKERAT
+         | TFROMDECIMAL
 %nonterm program of blockans | block of blockans
          | declseq of ((decls list)*(decls list)*(decls list))*( decls_table ref)
          | vardecls of (decls list)*(decls list)*(decls list) 
@@ -120,7 +124,7 @@ fun getter(l) = let val shimt = get_emptysym() in initialize_sym(l,shimt);shimt 
 %start program
 %%
 program: block (dfs(block);block)
-block: declseq commandseq (blockans(declseq,commandseq,(map get_blockreffromproc (HashTable.listItems(!(#2 declseq)))),ref Empty,getter((#1(#1 declseq))@(#2(#1 declseq))@(#3(#1 declseq)))))
+block: declseq commandseq (blockans(declseq,commandseq,(map get_blockreffromproc (HashTable.listItems(!(#2 declseq)))),ref Empty,getterl((#1(#1 declseq))@(#2(#1 declseq))@(#3(#1 declseq)))))
 declseq: vardecls procdecls (vardecls,procdecls)
         |   (([],[],[]),get_empty())
 procdecls: procdef TSEMI procdecls  (HashTable.insert(!procdecls)(get_id_from_proc(procdef),procdef);procdecls)
@@ -176,6 +180,6 @@ expression: TNEG expression (negative(expression))
 |           TRATNUM (rate(TRATNUM))
 |           TBOOLNUM (boole(TBOOLNUM))
 |           TINTNUM (inte(TINTNUM))
-
-
+|           TMAKERAT TLPAREN expression TCOMMA expression TRPAREN (makerat(expression1,expression2))
+|           TFROMDECIMAL TLPAREN TRATNUM TRPAREN (rate(TRATNUM))
 

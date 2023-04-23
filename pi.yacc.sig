@@ -2,6 +2,8 @@ signature Pi_TOKENS =
 sig
 type ('a,'b) token
 type svalue
+val TFROMDECIMAL:  'a * 'a -> (svalue,'a) token
+val TMAKERAT:  'a * 'a -> (svalue,'a) token
 val TCALL:  'a * 'a -> (svalue,'a) token
 val TREAD:  'a * 'a -> (svalue,'a) token
 val TPROCEDURE:  'a * 'a -> (svalue,'a) token

@@ -1,0 +1,19 @@
+rational a,b;integer i,j;boolean z,x;
+procedure hello {
+    print(2);
+};
+{
+     a:= fromDecimal(5.(6));
+     b := inverse(a);
+     z := tt;
+     x := !z;
+     print(x);
+     print(b);
+     print(a);
+     read(i);
+     call hello;
+     print(1);
+     print(8);
+     print(a);
+    print(i);
+}

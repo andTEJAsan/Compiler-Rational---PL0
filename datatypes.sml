@@ -30,6 +30,7 @@ and  Expression = negative of Expression
                       | lesseq of Expression*Expression
                       | more of Expression*Expression
                       | moreeq of Expression*Expression
+                      | makerat of Expression*Expression
                       | inte of BigInt.bigint
                       | rate of Rational.rational
                       | boole of bool
@@ -37,7 +38,7 @@ and Cmd = AssignmentCmd of (id*Expression) | PrintCmd of Expression | Conditiona
               | WhileCmd of (Expression*(Cmd list))  
             | CallCmd of id
             | ReadCmd of id
-and blockans = blockans of (((decls list)*(decls list)*(decls list))*(((string,decls) HashTable.hash_table) ref))*(Cmd list)*((blockans ref) list)*(blockans ref)*((((string,sym option ) HashTable.hash_table) ref))| Empty
+and blockans = blockans of (((decls list)*(decls list)*(decls list))*(((string,decls) HashTable.hash_table) ref))*(Cmd list)*((blockans ref) list)*(blockans ref)*(((((string,sym option ) HashTable.hash_table) ref) list) ref)| Empty
 
 type decls_table = ((string,decls) HashTable.hash_table)
 fun extractor(INT_(x)) = x
@@ -55,5 +56,27 @@ fun initialize_sym([],l) = ()
  | NONE => ((HashTable.insert (!l) (extractor(x),NONE));())
 )
 end) in initialize_sym(xs,l) end
+fun get_emtysym() = ref(let val ht : (string, sym option) HashTable.hash_table = HashTable.mkTable(HashString.hashString, op=)(17, Domain)
+in ht end)
+fun geter(l) = let val shimt = get_emtysym() in initialize_sym(l,shimt);shimt end 
+
+fun newsym(env : blockans ref) = case (!env) of
+   blockans(((z1,z2,z3),y),b,c,d,e) => geter((z1@z2@z3))
+ | _ => (print("It should never come to this\n");raise InitializationError)
+fun pusher(env : blockans ref) = (
+  case (!env) of
+      blockans(a,b,c,d,e) => (let
+        val newsymt = newsym(env)
+      in
+        e:= (newsymt::(!e));()
+      end)
+   | _ => raise InitializationError
+) 
+fun popper(env : blockans ref) = (
+  case (!env) of
+     blockans(a,b,c,d,e) => ((e := (tl(!e)));())
+   | _ => (print("It should never come to this\n");raise InitializationError)
+
+)
 
 end;
