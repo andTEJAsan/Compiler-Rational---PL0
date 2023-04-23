@@ -45,6 +45,19 @@ E ::= ~ E
 9. You are not allowed to have procdecls of the same name in the same block (possible in different blocks)
 10. Whenever a procedure is called, a newsymbol table is added to the symboltable stack to initialize its local variables this will enable recursion to work correctly
 
+11. Precedence orders used 
+%left TOR 
+%left TAND
+%right TNOT
+%left TEQ TNE  TLT  TLE  TGT  TGE
+
+%left TSUB TADD TRATSUB TRATADD
+%left TMUL TDIV TRATMUL TRATDIV TMOD
+
+ 
+
+%right TNEG TINV
+
 
 Acknowledgements
 ________________

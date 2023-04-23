@@ -110,18 +110,17 @@ fun check(id,symt) = (
 
 
 
-%left TSUB TADD
-%left TMUL TDIV 
-
-%left TRATSUB TRATADD
-%left TRATMUL TRATDIV 
-
 %left TOR 
 %left TAND
+%right TNOT
 %left TEQ TNE  TLT  TLE  TGT  TGE
-%left TMOD
-%right TNOT TINV
-%right TNEG
+
+%left TSUB TADD TRATSUB TRATADD
+%left TMUL TDIV TRATMUL TRATDIV TMOD
+
+ 
+
+%right TNEG TINV
 
 
 
