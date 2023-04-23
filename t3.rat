@@ -1,0 +1,33 @@
+integer m,x,y,u;
+boolean z,w;
+procedure A
+   integer u;
+   boolean p;
+   { u:= 5;
+     call B;
+     print(m);
+   }
+;
+procedure B
+   rational b;
+   procedure C
+        rational c;
+        { c:= 1.(5);};
+   { b:= 1.(0);
+     m:=789;
+     call C;
+   }
+;
+{ x := 1;
+  x:=2;
+  y:=3;
+  y:=y+x;
+  y:=y/x+y*x;
+  z:=y=x;
+  w:=ff || tt;
+  if y=x then {print(1);} else {print(2);} fi ;
+  while y<>x do {print(x); x:=x+1;} od;
+  u := 2;
+  call A;
+  while u < 10 do {u := u + 1; print(u);} od;
+    }

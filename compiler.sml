@@ -268,7 +268,7 @@ case (eval_expr(P,env),eval_expr(Q,env)) of
 |   DataTypes.makerat(P,Q) => (
   case (eval_expr(P,env),eval_expr(Q,env)) of
 (DataTypes.INTs p, DataTypes.INTs q) => DataTypes.RATs(valOf(Rational.make_rat(p,q)))
-| _ => (print("TypeError, Both arguments to make_rat should be of type int and int");raise TypeError)
+| _ => (print("TypeError, Both arguments to make_rat should be of type int * int");raise TypeError)
 )
 |   DataTypes.inte(X) => (DataTypes.INTs X)
 |   DataTypes.rate(X) => (DataTypes.RATs X)
@@ -317,7 +317,7 @@ in
   case verdict of
     DataTypes.BOOLs(true) => (execute_multi(cmdl, env);execute_single(cmd,env))
    | DataTypes.BOOLs(false) => ()
-   | _ => (print("Expression should be a boolean expression\n");raise TypeError)
+   | _ => (print("While Expression should be a boolean expression\n");raise TypeError)
 end
  )
  | DataTypes.CallCmd(id) => (
@@ -347,18 +347,26 @@ case gettype of
    )
  | SOME(DataTypes.INT_(a)) => (
 let
-  val inputLine = valOf(TextIO.inputLine TextIO.stdIn)
-  val num = String.substring(inputLine,0,size(inputLine)-1)
+  val inputline =(print("Enter Integer Number:\n");( case (TextIO.inputLine TextIO.stdIn) of 
+  NONE => raise InputError
+  | SOME s => s
+  ))
+
+  val num = String.substring(inputline,0,size(inputline)-1)
   val symentryexp = DataTypes.inte(BigInt.fromString(num))
   val command = DataTypes.AssignmentCmd(id,symentryexp)
 in
-  execute_single(command,env)
+  (execute_single(command,env))
 end
  )
 | SOME(DataTypes.BOOL_(a)) => (
 let
-  val inputLine = valOf(TextIO.inputLine TextIO.stdIn)
-  val num = String.substring(inputLine,0,size(inputLine)-1)
+  val inputline =(print("Enter Boolean Value:\n");( case (TextIO.inputLine TextIO.stdIn) of 
+  NONE => raise InputError
+  | SOME s => s
+  ))
+
+  val num = String.substring(inputline,0,size(inputline)-1)
   val symentryexp = (case num of
   "tt" => (DataTypes.boole(true) )
   | "ff" => (DataTypes.boole(false) )
@@ -367,17 +375,21 @@ let
   )
   val command = DataTypes.AssignmentCmd(id,symentryexp)
 in
-  execute_single(command,env)
+  (execute_single(command,env))
 end
  )
 | SOME(DataTypes.RAT_(a)) => (
 let
-  val inputLine = valOf(TextIO.inputLine TextIO.stdIn)
+
+  val inputline =(print("Enter Decimal form:\n");( case (TextIO.inputLine TextIO.stdIn) of 
+  NONE => raise InputError
+  | SOME s => s
+  ))
   val num = String.substring(inputLine,0,size(inputLine)-1)
   val symentryexp = DataTypes.rate(Rational.fromDecimal(num)) 
   val command = DataTypes.AssignmentCmd(id,symentryexp)
 in
-  execute_single(command,env)
+ (execute_single(command,env))
 end
  )
 | _ => (print("I Hope it never comes to this\n");raise TypeError)

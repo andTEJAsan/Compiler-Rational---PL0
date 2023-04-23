@@ -1509,6 +1509,7 @@ state 96:
 	expression : expression . TGE expression 
 	expression : expression TGE expression .  (reduce by rule 52)
 
+	TMOD	shift 72
 
 
 	.	reduce by rule 52
@@ -1535,6 +1536,7 @@ state 97:
 	expression : expression TGT expression .  (reduce by rule 51)
 	expression : expression . TGE expression 
 
+	TMOD	shift 72
 
 
 	.	reduce by rule 51
@@ -1561,6 +1563,7 @@ state 98:
 	expression : expression . TGT expression 
 	expression : expression . TGE expression 
 
+	TMOD	shift 72
 
 
 	.	reduce by rule 50
@@ -1587,6 +1590,7 @@ state 99:
 	expression : expression . TGT expression 
 	expression : expression . TGE expression 
 
+	TMOD	shift 72
 
 
 	.	reduce by rule 49
@@ -1613,6 +1617,7 @@ state 100:
 	expression : expression . TGT expression 
 	expression : expression . TGE expression 
 
+	TMOD	shift 72
 
 
 	.	reduce by rule 48
@@ -1639,6 +1644,7 @@ state 101:
 	expression : expression . TGT expression 
 	expression : expression . TGE expression 
 
+	TMOD	shift 72
 
 
 	.	reduce by rule 47
@@ -1665,6 +1671,7 @@ state 102:
 	expression : expression . TGT expression 
 	expression : expression . TGE expression 
 
+	TMOD	shift 72
 	TAND	shift 71
 	TEQ	shift 69
 	TNE	shift 68
@@ -1698,6 +1705,7 @@ state 103:
 	expression : expression . TGT expression 
 	expression : expression . TGE expression 
 
+	TMOD	shift 72
 	TEQ	shift 69
 	TNE	shift 68
 	TLT	shift 67
@@ -1730,18 +1738,6 @@ state 104:
 	expression : expression . TGT expression 
 	expression : expression . TGE expression 
 
-	TRATADD	shift 80
-	TRATSUB	shift 79
-	TRATMUL	shift 78
-	TRATDIV	shift 77
-	TAND	shift 71
-	TOR	shift 70
-	TEQ	shift 69
-	TNE	shift 68
-	TLT	shift 67
-	TLE	shift 66
-	TGT	shift 65
-	TGE	shift 64
 
 
 	.	reduce by rule 44
@@ -1772,6 +1768,7 @@ state 105:
 	TRATSUB	shift 79
 	TRATMUL	shift 78
 	TRATDIV	shift 77
+	TMOD	shift 72
 	TAND	shift 71
 	TOR	shift 70
 	TEQ	shift 69
@@ -1810,6 +1807,7 @@ state 106:
 	TRATSUB	shift 79
 	TRATMUL	shift 78
 	TRATDIV	shift 77
+	TMOD	shift 72
 	TAND	shift 71
 	TOR	shift 70
 	TEQ	shift 69
@@ -1926,6 +1924,7 @@ state 109:
 	expression : expression . TGT expression 
 	expression : expression . TGE expression 
 
+	TMOD	shift 72
 	TAND	shift 71
 	TOR	shift 70
 	TEQ	shift 69
@@ -1960,6 +1959,7 @@ state 110:
 	expression : expression . TGT expression 
 	expression : expression . TGE expression 
 
+	TMOD	shift 72
 	TAND	shift 71
 	TOR	shift 70
 	TEQ	shift 69
@@ -1996,6 +1996,7 @@ state 111:
 
 	TRATMUL	shift 78
 	TRATDIV	shift 77
+	TMOD	shift 72
 	TAND	shift 71
 	TOR	shift 70
 	TEQ	shift 69
@@ -2032,6 +2033,7 @@ state 112:
 
 	TRATMUL	shift 78
 	TRATDIV	shift 77
+	TMOD	shift 72
 	TAND	shift 71
 	TOR	shift 70
 	TEQ	shift 69
@@ -2265,5 +2267,5 @@ state 127:
 
 	.	error
 
-299 of 705 action table entries left after compaction
+301 of 707 action table entries left after compaction
 73 goto table entries

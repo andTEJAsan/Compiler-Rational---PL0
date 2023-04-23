@@ -1,30 +1,24 @@
-(* Author: Ramneet Singh 
- Recursive Factorial Program in the Language Rational+PL0 *)
+integer a,b;
+procedure bye
+{
+    a := 55;
+};
 
-integer factorialArg, factorialResult;
 
-procedure factorialRec
-    integer i, acc;
-
-    procedure factorialIter
-        {
-            if (i <= factorialArg) then
-            {
-                acc := acc*i;
-                i := i+1;
-                call factorialIter;
-            } else {} fi;
-        };
-
-    {
-        i := 1;
-        acc := 1;
-        call factorialIter;
-        factorialResult := acc;
-    };
+procedure hello
+integer a;
+{
+    a := 67;
+    print(a);
+    call bye;
+    print(a);
+};  
 
 {
-    read(factorialArg);
-    call factorialRec;
-    print(factorialResult);
+    a := 1;
+    print (a);
+    b := 2;
+    print (b);
+    call hello;
+    print(a);
 }

@@ -111,7 +111,7 @@ fun check(id,symt) = (
 
 
 %left TSUB TADD
-%left TMUL TDIV TMOD
+%left TMUL TDIV 
 
 %left TRATSUB TRATADD
 %left TRATMUL TRATDIV 
@@ -119,6 +119,7 @@ fun check(id,symt) = (
 %left TOR 
 %left TAND
 %left TEQ TNE  TLT  TLE  TGT  TGE
+%left TMOD
 %right TNOT TINV
 %right TNEG
 
