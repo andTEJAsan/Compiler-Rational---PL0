@@ -347,7 +347,7 @@ case gettype of
    )
  | SOME(DataTypes.INT_(a)) => (
 let
-  val inputline =(print("Enter Integer Number:\n");( case (TextIO.inputLine TextIO.stdIn) of 
+  val inputline =(TextIO.print("Enter Integer Number for \""^a^"\": \n");( case (TextIO.inputLine TextIO.stdIn) of 
   NONE => raise InputError
   | SOME s => s
   ))
@@ -361,7 +361,7 @@ end
  )
 | SOME(DataTypes.BOOL_(a)) => (
 let
-  val inputline =(print("Enter Boolean Value:\n");( case (TextIO.inputLine TextIO.stdIn) of 
+  val inputline =(TextIO.print("Enter Boolean Value for \""^a^"\" :\n");( case (TextIO.inputLine TextIO.stdIn) of 
   NONE => raise InputError
   | SOME s => s
   ))
@@ -381,11 +381,11 @@ end
 | SOME(DataTypes.RAT_(a)) => (
 let
 
-  val inputline =(print("Enter Decimal form:\n");( case (TextIO.inputLine TextIO.stdIn) of 
+  val inputline =(TextIO.print("Enter Decimal form for \""^a^"\" :\n");( case (TextIO.inputLine TextIO.stdIn) of 
   NONE => raise InputError
   | SOME s => s
   ))
-  val num = String.substring(inputLine,0,size(inputLine)-1)
+  val num = String.substring(inputline,0,size(inputline)-1)
   val symentryexp = DataTypes.rate(Rational.fromDecimal(num)) 
   val command = DataTypes.AssignmentCmd(id,symentryexp)
 in
