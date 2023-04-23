@@ -1,1 +1,5 @@
-Can't use && between two expressions of non boolean type
+1
+2
+67
+67
+55

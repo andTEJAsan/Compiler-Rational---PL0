@@ -1,10 +1,24 @@
-rational a,b;integer i,j;boolean z,x;
-procedure hello {
-    print(2);
-};
-procedure hello {
-    print(3);
-};
-{
+integer a,b;
 
+procedure hello
+integer a;
+{
+    a := 67;
+    print(a);
+    call bye;
+    print(a);
+};  
+
+procedure bye
+{
+    a := 55;
+};
+
+{
+    a := 1;
+    print (a);
+    b := 2;
+    print (b);
+    call hello;
+    print(a);
 }
