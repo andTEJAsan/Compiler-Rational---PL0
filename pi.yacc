@@ -76,6 +76,7 @@ fun check(id,symt) = (
          | TCALL
          | TMAKERAT
          | TFROMDECIMAL
+         | TRATUM
 %nonterm program of blockans | block of blockans
          | declseq of ((decls list)*(decls list)*(decls list))*( decls_table ref)
          | vardecls of (decls list)*(decls list)*(decls list) 
@@ -112,7 +113,6 @@ fun check(id,symt) = (
 
 %left TOR 
 %left TAND
-%right TNOT
 %left TEQ TNE  TLT  TLE  TGT  TGE
 
 %left TSUB TADD TRATSUB TRATADD
@@ -120,7 +120,7 @@ fun check(id,symt) = (
 
  
 
-%right TNEG TINV
+%right TNEG TINV TNOT
 
 
 
@@ -186,5 +186,6 @@ expression: TNEG expression (negative(expression))
 |           TBOOLNUM (boole(TBOOLNUM))
 |           TINTNUM (inte(TINTNUM))
 |           TMAKERAT TLPAREN expression TCOMMA expression TRPAREN (makerat(expression1,expression2))
+|           TRATUM TLPAREN expression TRPAREN (rata(expression))
 |           TFROMDECIMAL TLPAREN TRATNUM TRPAREN (rate(TRATNUM))
 

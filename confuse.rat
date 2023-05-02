@@ -6,7 +6,7 @@ procedure first
     integer a;
     procedure second
     {
-        a := a  && 10;
+        a := a  + 10;
     };
 {
     a:= 0;

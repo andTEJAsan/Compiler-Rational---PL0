@@ -1,0 +1,30 @@
+rational cc,d,e;
+integer x,y,z;
+procedure a
+    rational x;
+        procedure b 
+            procedure c
+            {
+                x:= fromDecimal(100.(3)) .*. make_rat(1,100) .+. make_rat(5,1) .+. inverse(make_rat(2,1)); 
+                x:= ~ x;
+            };
+            {
+                print(x);
+                call c;
+                x:= x .+. make_rat(10,1);
+                print(x);
+            };
+    {
+        x:= make_rat(2,1);
+        print(x);
+        call b;
+        print(x);
+    };
+{
+    x:= 20;
+    print(x+5);
+    call a;
+    print(x);
+    cc:= make_rat(6,7);
+    d:= make_rat(6,7);
+}

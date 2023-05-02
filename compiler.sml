@@ -270,6 +270,11 @@ case (eval_expr(P,env),eval_expr(Q,env)) of
 (DataTypes.INTs p, DataTypes.INTs q) => DataTypes.RATs(valOf(Rational.make_rat(p,q)))
 | _ => (print("TypeError, Both arguments to make_rat should be of type int * int");raise TypeError)
 )
+|   DataTypes.rata(P) =>(
+  case eval_expr(P,env) of
+     DataTypes.INTs p => DataTypes.RATs(valOf(Rational.rat(p)))
+   | _ => raise FoolError
+)
 |   DataTypes.inte(X) => (DataTypes.INTs X)
 |   DataTypes.rate(X) => (DataTypes.RATs X)
 |   DataTypes.boole(X) =>(DataTypes.BOOLs X)

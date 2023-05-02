@@ -21,7 +21,7 @@ sig
   val toString : bigint -> string
 end
 exception fool;
-exception InputError;
+exception LexError;
 
 structure BigInt : BIGINT =
 struct
@@ -29,7 +29,6 @@ struct
   type bigint = bool * (int list)
   (* to avoid multiple representations of zero we will use the default (false, [0])  *)
   fun equals(a:bigint,b:bigint) = ((#1(a) = #1(b)) andalso(#2(a)= #2(b)))
-  fun fromString(s: string) = let val chrlist = explode(s) fun builder(x,y) =if (x=[]) then (print("Enter in the correct format of an integer");raise InputError) else if(length(x) = 1) then(if (((ord(hd x)-48)<10)andalso(0<=(ord(hd x)-48))) then ((ord(hd x)-48)::y)else (print( "Enter in the correct format of an integer");raise InputError)) else if(ord(hd x)=48) then builder(tl x,y) else if(((ord(hd x)-48)<10)andalso(0<(ord(hd x)-48))) then builder(tl x,(ord(hd x)-48)::y) else (print( "Enter in the correct format of an integer");raise InputError)  in if(#"~" = (hd chrlist)) then let val res = builder(tl chrlist,[]) in if(res =[0]) then (false,[0]) else (true,res) end else(false, builder(chrlist,[])) end
   fun fromInt(a : int) : bigint =case a of ~1073741824 => (true,4::(#2(fromInt(107374182))))| _ => (if ( a < 0 ) then (true, #2 (fromInt(~ a))) else if (a = 0) then (false , [0]) else 
                         let
                           fun fromposint(0) = []
@@ -38,7 +37,7 @@ struct
                         in
                           (false, fromposint(a))
                         end)
-
+  fun fromString(s) = fromInt(valOf(Int.fromString(s)))
   fun toInt((false,[x]):bigint) = SOME x
     |  toInt((true,a)) = let val x = toInt(false,a) in case x of NONE =>NONE | SOME b =>SOME (~b) end  
     |  toInt(false,a) = let val firstdig = hd a val rest = toInt(false,tl a) in 
@@ -242,13 +241,13 @@ struct
   ) then raise zero_division_error
   else SOME (valOf(make_rat(BigInt.mul(b,x),BigInt.mul(a,y))))
 
-  fun k(a) = if(length(a) < 2) then (print("Enter the rational decimal in the correct format");raise InputError) else if(List.last(a) <> #")") then (print("Enter the rational decimal in the correct format");raise InputError )else let val num = String.extract(implode(a),0,SOME(length(a)-1)) val den = implode(let fun bo(m) = (if(m=0) then[] else (#"9")::bo(m-1)) in bo(length(a)-1) end) in valOf(make_rat(BigInt.fromString(num),BigInt.fromString(den))) end 
+  fun k(a) = if(length(a) < 2) then raise LexError else if(List.last(a) <> #")") then raise LexError else let val num = String.extract(implode(a),0,SOME(length(a)-1)) val den = implode(let fun bo(m) = (if(m=0) then[] else (#"9")::bo(m-1)) in bo(length(a)-1) end) in valOf(make_rat(BigInt.fromString(num),BigInt.fromString(den))) end 
   fun h(a : char list) : rational = if (length(a)=0) then valOf(rat(BigInt.fromInt(0))) else valOf (rat(BigInt.fromString(implode(rev(a)))))
-  fun g(a : char list) : rational = let fun oi(a,b:rational,acc:rational) =if(a=[]) then (print("Enter the rational decimal in the correct format");raise InputError )else if (hd(a) = #"(") then add(acc,multiply(b,k(tl(a)))) else  if(((ord(hd a)-48)<10)andalso(0<=(ord(hd a)-48))) then  (let val next = multiply(b,valOf(reci(BigInt.fromInt(10)))) val nextacc = add(acc,multiply(next,valOf(rat(BigInt.fromInt(ord(hd(a))-48))))) in oi(tl a,next,nextacc) end) else (print("Enter the rational decimal in the correct format");raise InputError) in oi(a,valOf(rat(BigInt.fromInt(1))),valOf(rat(BigInt.fromInt(0)))) end
-  fun fromCharlist(x,y) =if(x=[]) then (print("Enter the rational decimal in the correct format");raise InputError) else if(hd (x) = #"~") then neg(fromCharlist(tl (x),y)) else
+  fun g(a : char list) : rational = let fun oi(a,b:rational,acc:rational) =if(a=[]) then raise LexError else if (hd(a) = #"(") then add(acc,multiply(b,k(tl(a)))) else  if(((ord(hd a)-48)<10)andalso(0<=(ord(hd a)-48))) then  (let val next = multiply(b,valOf(reci(BigInt.fromInt(10)))) val nextacc = add(acc,multiply(next,valOf(rat(BigInt.fromInt(ord(hd(a))-48))))) in oi(tl a,next,nextacc) end) else raise LexError in oi(a,valOf(rat(BigInt.fromInt(1))),valOf(rat(BigInt.fromInt(0)))) end
+  fun fromCharlist(x,y) =if(x=[]) then raise LexError else if(hd (x) = #"~") then neg(fromCharlist(tl (x),y)) else
                         if(hd(x) = #"+") then fromCharlist(tl x,y) else
                         if(hd(x) = #".") then add(h(y), g(tl x)) else 
-                        if(((ord(hd x)-48)<10)andalso(0<=(ord(hd x)-48))) then fromCharlist( tl x, hd(x) :: y) else raise InputError
+                        if(((ord(hd x)-48)<10)andalso(0<=(ord(hd x)-48))) then fromCharlist( tl x, hd(x) :: y) else raise LexError
 
 
                         

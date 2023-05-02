@@ -42,6 +42,7 @@ id= [A-Za-z]{idchars}*;
 <PI>"else" => (col:=yypos-(!eolpos);T.TELSE(!lin,!col));
 <PI>"then" => (col:=yypos-(!eolpos);T.TTHEN(!lin,!col));
 <PI>"fi" => (col:=yypos-(!eolpos);T.TFI(!lin,!col));
+<PI>"rat" => (col:=yypos-(!eolpos);T.TRATUM(!lin,!col));
 <PI>"while" => (col:=yypos-(!eolpos);T.TWHILE(!lin,!col));
 <PI>"do" => (col:=yypos-(!eolpos);T.TDO(!lin,!col));
 <PI>"od" => (col:=yypos-(!eolpos);T.TOD(!lin,!col));

@@ -34,6 +34,7 @@ and  Expression = negative of Expression
                       | makerat of Expression*Expression
                       | inte of BigInt.bigint
                       | rate of Rational.rational
+                      | rata of Expression
                       | boole of bool
 and Cmd = AssignmentCmd of (id*Expression) | PrintCmd of Expression | ConditionalCmd of Expression*(Cmd list)*(Cmd list)
               | WhileCmd of (Expression*(Cmd list))  
