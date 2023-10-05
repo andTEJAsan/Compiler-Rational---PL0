@@ -1,8 +1,8 @@
 Instructions To Run the interpreter
-1. Run the command "sudo sml make.sml"
-2. In the SML environment type interpret(inputfile,outputfile) and press Enter
-3. To see the ASTree, type compile(inputfile)
-3. For read statements, input will be taken from the terminal, press Enter to stop reading
+1. Run the command `sudo sml make.sml`
+2. In the SML environment type `interpret(inputfile,outputfile)` and press Enter
+3. To see the ASTree, type `compile(inputfile)`
+3. For read statements, input will be taken from the stdin, press Enter to stop reading
 Design Decisions:-
 1. To Prevent Shift Reduce Conflicts, the grammar of expressions was modified
 2. The modified grammar of expressions
