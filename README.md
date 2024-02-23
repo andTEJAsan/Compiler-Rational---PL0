@@ -1,3 +1,6 @@
+Prerequisites:-
+1. Must have smlnj interpreter installed
+
 Instructions To Run the interpreter
 1. Run the command `sudo sml make.sml`
 2. In the SML environment type `interpret(inputfile,outputfile)` and press Enter
@@ -34,12 +37,12 @@ E ::= ~ E
     
 3. We will do type checking during evaluation of AST
 4. For each block the following attributes have been made during AST formation and then changed during execution
-# Declarations Table
-# Procedure Declarations Table
-# Command List
-# A Reference list of children blocks (This was built during the ASTree formation, it is a synthesized attribute)
-# A Reference to the Parent block
-# A Stack of SymbolTables
+\# Declarations Table
+\# Procedure Declarations Table
+\# Command List
+\# A Reference list of children blocks (This was built during the ASTree formation, it is a synthesized attribute)
+\# A Reference to the Parent block
+\# A Stack of SymbolTables
 5. We have made the ASTRee using the sml datatype constructor which allows us to construct recursive data-structures
 6. To get the parent references for each block, we started a Depth-First Search from the main block.
 7. Whenever an identifier is mentioned , we check its availability in the parent chain of the scope in which it is mentioned.
